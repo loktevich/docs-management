@@ -1,6 +1,6 @@
 ### Java ###
 *.class
-*/bin/**
+bin
 
 # Package Files #
 *.jar
@@ -26,7 +26,6 @@ build/
 .project
 .metadata
 .recommenders
-bin/**
 tmp/**
 tmp/**/*
 *.tmp
@@ -37,3 +36,6 @@ local.properties
 .classpath
 .settings/
 .loadpath
+
+## VS Code ###
+.vscode
