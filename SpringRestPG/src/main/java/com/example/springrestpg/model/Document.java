@@ -3,7 +3,6 @@
  */
 package com.example.springrestpg.model;
 
-import java.io.File;
 import java.sql.Date;
 
 import javax.persistence.Column;
@@ -21,17 +20,26 @@ import javax.persistence.Table;
 @Table(name = "document")
 public class Document {
 
-	public Document(String description, Date creationDate, String author, File documentFile, Boolean readOnly) {
+	public Document() {
+	}
+
+	public Document(String documentName, String description, Date creationDate, String author, byte[] documentData,
+			String documentType, Boolean readOnly) {
+		this.documentName = documentName;
 		this.description = description;
 		this.creationDate = creationDate;
 		this.author = author;
-		this.documentFile = documentFile;
+		this.documentData = documentData;
+		this.documentType = documentType;
 		this.readOnly = readOnly;
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long documentId;
+
+	@Column(name = "name")
+	private String documentName;
 
 	@Column(name = "description")
 	private String description;
@@ -42,14 +50,25 @@ public class Document {
 	@Column(name = "author")
 	private String author;
 
-	@Column(name = "file")
-	private File documentFile;
+	@Column(name = "data")
+	private byte[] documentData;
+
+	@Column(name = "type")
+	private String documentType;
 
 	@Column(name = "readonly")
 	private Boolean readOnly;
 
 	public long getDocumentId() {
 		return documentId;
+	}
+
+	public String getDocumentName() {
+		return documentName;
+	}
+
+	public void setDocumentName(String documentName) {
+		this.documentName = documentName;
 	}
 
 	public String getDescription() {
@@ -76,12 +95,20 @@ public class Document {
 		this.author = author;
 	}
 
-	public File getDocumentFile() {
-		return documentFile;
+	public byte[] getDocumentData() {
+		return documentData;
 	}
 
-	public void setDocumentFile(File documentFile) {
-		this.documentFile = documentFile;
+	public void setDocumentData(byte[] documentData) {
+		this.documentData = documentData;
+	}
+
+	public String getDocumentType() {
+		return documentType;
+	}
+
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
 	}
 
 	public Boolean isReadOnly() {
@@ -95,10 +122,11 @@ public class Document {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Document [documentId=").append(documentId).append(", description=").append(description)
-				.append(", creationDate=").append(creationDate).append(", author=").append(author)
-				.append(", documentFile=").append(documentFile).append(", readOnly=").append(readOnly).append("]");
+		builder.append("Document [documentId=").append(documentId).append(", name=").append(documentName)
+				.append(", type=").append(documentType).append(", description=").append(description)
+				.append(", creationDate=").append(creationDate).append(", author=").append(author).append(", readOnly=")
+				.append(readOnly).append("]");
 		return builder.toString();
 	}
-	
+
 }
