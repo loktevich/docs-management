@@ -12,12 +12,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Proxy;
+
 /**
  * @author Dmitry Loktevich
  *
  */
 @Entity
 @Table(name = "document")
+@Proxy(lazy = false)
 public class Document {
 
 	public Document() {
