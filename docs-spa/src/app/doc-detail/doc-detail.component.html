@@ -1,0 +1,10 @@
+<div *ngIf="document">
+  <h2>Details for document #{{ document.documentId }}</h2>
+  <div><span>Document Name: </span>{{ document.documentName }}</div>
+  <div><span>Type: </span>{{ document.documentType }}</div>
+  <div><span>Description: </span>{{ document.description }}</div>
+  <div><span>Author: </span>{{ document.author }}</div>
+  <div><span>readonly: </span>{{ document.readOnly }}</div>
+  <button (click)="delete()">Delete document</button>
+  <button (click)="goBack()">Go back</button>
+</div>
