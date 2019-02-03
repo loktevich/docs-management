@@ -8,6 +8,7 @@ import { DocsListComponent } from './docs-list/docs-list.component';
 import { DocDetailComponent } from './doc-detail/doc-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DocAddComponent } from './doc-add/doc-add.component';
+import { MatCommonModule, MatTableModule, MatSortModule, MatPaginatorModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,12 @@ import { DocAddComponent } from './doc-add/doc-add.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    MatCommonModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,5 @@
 export class Document {
-    documentId: string;
+    documentId: number;
     documentName: string;
     description: string;
     creationDate: Date;

@@ -1,5 +1,21 @@
-<nav>
-    <a routerLink="/documents">Documents</a>
-    <a routerLink="/add">Add document</a>
-  </nav>
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top mat-elevation-z6">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/documents">Docs Manager</a>
+    <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
+      aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/documents">Documents <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/add">Add document</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 <router-outlet></router-outlet>

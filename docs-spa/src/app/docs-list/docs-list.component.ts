@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DocumentsService } from '../service/documents.service';
 import { error } from 'util';
 import { Document } from '../model/document';
+import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 
 @Component({
   selector: 'app-docs-list',
@@ -10,23 +11,33 @@ import { Document } from '../model/document';
 })
 export class DocsListComponent implements OnInit {
 
-  documents: Array<Document>;
+  displayedColumns: string[] = ['documentId', 'documentName', 'author', 'creationDate', 'readOnly'];
+  documents = new MatTableDataSource<Document>();
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private docService: DocumentsService) { }
 
   ngOnInit() {
     this.getDocumentList();
+    this.documents.sort = this.sort;
+    this.documents.paginator = this.paginator;
   }
 
   getDocumentList(): void {
     this.docService.getDocuments().subscribe(
       data => {
-        this.documents = data;
+        this.documents.data = data;
       },
       // tslint:disable-next-line:no-shadowed-variable
       error => {
         return console.log(error);
       }
     );
+  }
+
+  applyFilter(filterValue: string) {
+    this.documents.filter = filterValue.trim().toLowerCase();
   }
 }

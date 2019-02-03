@@ -1,9 +1,57 @@
-<h2>Documents</h2>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 mt-4">
+      <h2>Documents</h2>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+    </div>
+  </div>
 
-<ul>
-  <li *ngFor="let document of documents">
-    
-    <a routerLink="/documents/{{ document.documentId }}">{{ document.documentName }}</a>
-    
-  </li>
-</ul>
+  <div class="row">
+    <div class="col-12 mb-4">
+      <div class="mat-elevation-z8 docs-table">
+        <mat-table [dataSource]="documents" matSort>
+
+          <!-- ID Column -->
+          <ng-container matColumnDef="documentId">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
+            <mat-cell *matCellDef="let doc"> {{ doc.documentId }} </mat-cell>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="documentName">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+            <mat-cell *matCellDef="let doc"> {{ doc.documentName }} </mat-cell>
+          </ng-container>
+
+          <!-- Color Column -->
+          <ng-container matColumnDef="author">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Author </mat-header-cell>
+            <mat-cell *matCellDef="let doc"> {{ doc.author }} </mat-cell>
+          </ng-container>
+
+          <!-- Color Column -->
+          <ng-container matColumnDef="creationDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Creation date </mat-header-cell>
+            <mat-cell *matCellDef="let doc"> {{ doc.creationDate }} </mat-cell>
+          </ng-container>
+
+          <!-- Color Column -->
+          <ng-container matColumnDef="readOnly">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Read Only </mat-header-cell>
+            <mat-cell *matCellDef="let doc"> {{ doc.readOnly }} </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let doc; columns: displayedColumns;">
+          </mat-row>
+        </mat-table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+
+      </div>
+    </div>
+  </div>
+
+</div>
