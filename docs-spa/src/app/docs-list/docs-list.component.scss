@@ -10,3 +10,11 @@
     width: 100%;
     min-width: 532px;
 }
+
+.mat-row {
+    cursor: pointer;
+}
+
+.mat-row:hover {
+    background-color: #eee;
+}

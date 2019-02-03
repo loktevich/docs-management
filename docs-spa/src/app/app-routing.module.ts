@@ -7,7 +7,8 @@ import { DocAddComponent } from './doc-add/doc-add.component';
 const routes: Routes = [
   { path: 'documents', component: DocsListComponent },
   { path: 'documents/:id', component: DocDetailComponent },
-  { path: 'add', component: DocAddComponent }
+  { path: 'add', component: DocAddComponent },
+  { path: '',   redirectTo: '/documents', pathMatch: 'full' },
 ];
 
 @NgModule({

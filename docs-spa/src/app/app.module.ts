@@ -8,7 +8,16 @@ import { DocsListComponent } from './docs-list/docs-list.component';
 import { DocDetailComponent } from './doc-detail/doc-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DocAddComponent } from './doc-add/doc-add.component';
-import { MatCommonModule, MatTableModule, MatSortModule, MatPaginatorModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import {
+  MatCommonModule,
+  MatTableModule,
+  MatSortModule,
+  MatPaginatorModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatButtonModule,
+  MatIconModule
+} from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -27,7 +36,9 @@ import { MatCommonModule, MatTableModule, MatSortModule, MatPaginatorModule, Mat
     MatSortModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

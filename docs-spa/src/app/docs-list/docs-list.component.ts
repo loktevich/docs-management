@@ -3,6 +3,7 @@ import { DocumentsService } from '../service/documents.service';
 import { error } from 'util';
 import { Document } from '../model/document';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-docs-list',
@@ -17,7 +18,10 @@ export class DocsListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private docService: DocumentsService) { }
+  constructor(
+    private docService: DocumentsService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.getDocumentList();
@@ -37,7 +41,12 @@ export class DocsListComponent implements OnInit {
     );
   }
 
-  applyFilter(filterValue: string) {
+  applyFilter(filterValue: string): void {
     this.documents.filter = filterValue.trim().toLowerCase();
   }
+
+  showDetails(id: number): void {
+    this.router.navigate(['documents', id]);
+  }
+
 }
