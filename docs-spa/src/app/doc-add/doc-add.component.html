@@ -1,3 +1,36 @@
-<p>
-  doc-add works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-4">
+      <h2>Edit document</h2>
+      <hr>
+
+      <form [formGroup]="profileForm" class="d-flex flex-column">
+
+        <label for="singleFile">Upload file</label>
+        <input id="singleFile" type="file" [fileUploadInputFor]="fileUploadQueue" />
+        <br>
+        <mat-file-upload-queue #fileUploadQueue [fileAlias]="'file'" [httpUrl]="'http://localhost:8180/jax-rs-jersey-application-sample'">
+          <mat-file-upload [file]="file" [id]="i" *ngFor="let file of fileUploadQueue.files; let i = index"></mat-file-upload>
+        </mat-file-upload-queue>
+        
+        <h4>Description</h4>
+        <mat-form-field>
+          <textarea rows="5" matInput formControlName="description"></textarea>
+        </mat-form-field>
+        <h4>Author</h4>
+        <mat-form-field>
+          <input matInput formControlName="author" />
+        </mat-form-field>
+        <mat-checkbox formControlName="readonly" color="primary">Read Only</mat-checkbox>
+      </form>
+
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-12">
+      <button mat-raised-button color="primary" (click)="goBack()" class="mr-3">Save Document</button>
+      <button mat-raised-button color="accent">Cancel</button>
+    </div>
+  </div>
+</div>

@@ -16,8 +16,11 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatButtonModule,
-  MatIconModule
+  MatIconModule,
+  MatCheckboxModule
 } from '@angular/material';
+// import { MatFileUploadModule } from 'angular-material-fileupload';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatCheckboxModule,
+    ReactiveFormsModule,
+    // MatFileUploadModule
   ],
   providers: [],
   bootstrap: [AppComponent]

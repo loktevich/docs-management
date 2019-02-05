@@ -1,10 +1,26 @@
-<div *ngIf="document">
-  <h2>Details for document #{{ document.documentId }}</h2>
-  <div><span>Document Name: </span>{{ document.documentName }}</div>
-  <div><span>Type: </span>{{ document.documentType }}</div>
-  <div><span>Description: </span>{{ document.description }}</div>
-  <div><span>Author: </span>{{ document.author }}</div>
-  <div><span>readonly: </span>{{ document.readOnly }}</div>
-  <button (click)="delete()">Delete document</button>
-  <button (click)="goBack()">Go back</button>
+<div class="container">
+  <div class="row">
+    <div class="col-12 mt-4">
+      <h2>Details for document #{{ document.documentId }}</h2>
+      <hr>
+      <h4>Description</h4>
+      <span class="text-warning" *ngIf="document.readOnly">Read Only</span>
+      <p>{{ document.description }}</p>
+      <h4>Document Name</h4>
+      <p>{{ document.documentName }}</p>
+      <h4>Document Type</h4>
+      <p>{{ document.documentType }}</p>
+      <h4>Created / Modified</h4>
+      <p>{{ document.creationDate }}</p>
+      <h4>Author</h4>
+      <p>{{ document.author }}</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <button mat-raised-button color="primary" (click)="goBack()" class="mr-3">Back</button>
+      <button mat-raised-button color="accent">Edit</button>
+    </div>
+  </div>
 </div>

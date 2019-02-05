@@ -1,12 +1,7 @@
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-8 mt-4">
+  <div class="row mt-4">
+    <div class="col-12">
       <h2>Documents</h2>
-    </div>
-    <div class="col-4 mt-3 d-flex justify-content-end">
-      <a mat-fab routerLink="/add" color="primary">
-        <mat-icon>add</mat-icon>
-      </a>
     </div>
   </div>
 
@@ -15,12 +10,14 @@
       <mat-form-field>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
       </mat-form-field>
+      <mat-paginator [pageSizeOptions]="[10, 25]" showFirstLastButtons></mat-paginator>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-12 mb-4">
+  <div class="row mb-4">
+    <div class="col-12">
       <div class="mat-elevation-z8 docs-table">
+
         <mat-table [dataSource]="documents" matSort>
 
           <!-- ID Column -->
@@ -58,10 +55,10 @@
           </mat-row>
         </mat-table>
 
-        <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
-
       </div>
     </div>
   </div>
-
 </div>
+<a mat-fab routerLink="/add" color="primary" class="position-fixed fixed-bottom ml-auto mr-4 mb-4">
+  <mat-icon aria-label="Add button">add</mat-icon>
+</a>
