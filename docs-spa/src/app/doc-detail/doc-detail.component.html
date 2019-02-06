@@ -11,16 +11,17 @@
       <h4>Document Type</h4>
       <p>{{ document.documentType }}</p>
       <h4>Created / Modified</h4>
-      <p>{{ document.creationDate }}</p>
+      <p>{{ document.creationDate | date }}</p>
       <h4>Author</h4>
       <p>{{ document.author }}</p>
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mb-4">
     <div class="col-12">
-      <button mat-raised-button color="primary" (click)="goBack()" class="mr-3">Back</button>
-      <button mat-raised-button color="accent">Edit</button>
+      <button mat-raised-button color="primary" (click)="goBack()">Back</button>
+      <button mat-raised-button color="accent" (click)="editDocPage(document.documentId); saveDoc(document)" class="mx-3">Edit</button>
+      <button mat-raised-button color="warn" (click)="deleteDoc()">Delete</button>
     </div>
   </div>
 </div>

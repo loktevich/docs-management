@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'documents', component: DocsListComponent },
   { path: 'documents/:id', component: DocDetailComponent },
   { path: 'add', component: DocAddComponent },
+  { path: 'documents/edit/:id', component: DocAddComponent },
   { path: '', redirectTo: '/documents', pathMatch: 'full' },
 ];
 

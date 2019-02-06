@@ -41,7 +41,7 @@
           <!-- Color Column -->
           <ng-container matColumnDef="creationDate">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Creation date </mat-header-cell>
-            <mat-cell *matCellDef="let doc"> {{ doc.creationDate }} </mat-cell>
+            <mat-cell *matCellDef="let doc"> {{ doc.creationDate | date }} </mat-cell>
           </ng-container>
 
           <!-- Color Column -->

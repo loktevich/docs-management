@@ -4,7 +4,7 @@
       <h2>Edit document</h2>
       <hr>
 
-      <form [formGroup]="profileForm" class="d-flex flex-column">
+      <form [formGroup]="documentForm" enctype="multipart/form-data" class="d-flex flex-column">
 
         <!-- <label for="singleFile">Upload file</label>
         <input id="singleFile" type="file" [fileUploadInputFor]="fileUploadQueue" />
@@ -12,7 +12,9 @@
         <mat-file-upload-queue #fileUploadQueue [fileAlias]="'file'" [httpUrl]="'http://localhost:8180/jax-rs-jersey-application-sample'">
           <mat-file-upload [file]="file" [id]="i" *ngFor="let file of fileUploadQueue.files; let i = index"></mat-file-upload>
         </mat-file-upload-queue> -->
-        
+        <h4>File</h4>
+        <input type="file" formControlName="file">
+
         <h4>Description</h4>
         <mat-form-field>
           <textarea rows="5" matInput formControlName="description"></textarea>
@@ -27,10 +29,10 @@
     </div>
   </div>
 
-  <div class="row mt-4">
+  <div class="row my-4">
     <div class="col-12">
-      <button mat-raised-button color="primary" (click)="goBack()" class="mr-3">Save Document</button>
-      <button mat-raised-button color="accent">Cancel</button>
+      <button mat-raised-button color="primary" (click)="saveDoc(file, description, author, readonly)" class="mr-3">Save Document</button>
+      <button mat-raised-button color="accent" (click)="goBack()">Cancel</button>
     </div>
   </div>
 </div>
