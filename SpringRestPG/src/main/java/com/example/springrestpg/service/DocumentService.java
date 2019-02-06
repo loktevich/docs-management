@@ -18,7 +18,7 @@ public interface DocumentService<T> {
 
 	T getById(long id);
 
-	T update(T doc, MultipartFile file);
+	T update(long id, T doc, MultipartFile file);
 
 	void deleteById(long id);
 }

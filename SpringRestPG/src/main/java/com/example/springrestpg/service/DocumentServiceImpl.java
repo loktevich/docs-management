@@ -28,8 +28,8 @@ public class DocumentServiceImpl implements DocumentService<Document> {
 	@Override
 	public Document create(Document document, MultipartFile file) {
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		Document newDocument = new Document();
 		try {
-			Document newDocument = new Document();
 			newDocument.setDocumentName(fileName);
 			newDocument.setDocumentType(file.getContentType());
 			newDocument.setDescription(document.getDescription());
@@ -41,7 +41,7 @@ public class DocumentServiceImpl implements DocumentService<Document> {
 			e.printStackTrace();
 		}
 
-		return repository.save(document);
+		return repository.save(newDocument);
 	}
 
 	@Override
@@ -55,21 +55,21 @@ public class DocumentServiceImpl implements DocumentService<Document> {
 	}
 
 	@Override
-	public Document update(Document document, MultipartFile file) {
+	public Document update(long id, Document document, MultipartFile file) {
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		Document existingDocument = repository.getOne(id);
 		try {
-			Document newDocument = new Document();
-			newDocument.setDocumentName(fileName);
-			newDocument.setDocumentType(file.getContentType());
-			newDocument.setDescription(document.getDescription());
-			newDocument.setAuthor(document.getAuthor());
-			newDocument.setDocumentData(file.getBytes());
-			newDocument.setCreationDate(new Date(new java.util.Date().getTime()));
-			newDocument.setReadOnly(document.isReadOnly());
+			existingDocument.setDocumentName(fileName);
+			existingDocument.setDocumentType(file.getContentType());
+			existingDocument.setDescription(document.getDescription());
+			existingDocument.setAuthor(document.getAuthor());
+			existingDocument.setDocumentData(file.getBytes());
+			existingDocument.setCreationDate(new Date(new java.util.Date().getTime()));
+			existingDocument.setReadOnly(document.isReadOnly());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return repository.save(document);
+		return repository.save(existingDocument);
 	}
 
 	@Override

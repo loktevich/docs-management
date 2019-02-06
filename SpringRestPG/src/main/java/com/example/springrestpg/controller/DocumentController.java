@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,20 +48,34 @@ public class DocumentController {
 		return docService.getById(id);
 	}
 
-	@PostMapping("/documents/add")
-	public ResponseEntity<String> addDocument(@RequestPart("document") Document document, @RequestPart("docFile") MultipartFile file) {
-		docService.create(document, file);
+	@PostMapping(value = "/documents/add", consumes = { "multipart/form-data" })
+	public ResponseEntity<String> addDocument(@RequestPart("document") String document,
+			@RequestPart("docFile") MultipartFile file) {
+		Document doc = new Document();
+		try {
+			doc = getDocFromJson(document);
+		} catch (JSONException e) {
+			return new ResponseEntity<String>("Parsing error", HttpStatus.BAD_REQUEST);
+		}
+		docService.create(doc, file);
 		return new ResponseEntity<String>("Document has been added", HttpStatus.OK);
 	}
 
 	@PutMapping("/documents/{id}")
-	public ResponseEntity<String> updateDocument(@PathVariable("id") long id, @RequestPart("document") Document document, @RequestPart("docFile") MultipartFile file) {
+	public ResponseEntity<String> updateDocument(@PathVariable("id") long id, @RequestPart("document") String document,
+			@RequestPart("docFile") MultipartFile file) {
 		try {
 			docService.getById(id);
 		} catch (EntityNotFoundException e) {
 			return new ResponseEntity<String>("Document not found", HttpStatus.NOT_FOUND);
 		}
-		docService.update(document, file);
+		Document doc = new Document();
+		try {
+			doc = getDocFromJson(document);
+		} catch (JSONException e) {
+			return new ResponseEntity<String>("Parsing error", HttpStatus.BAD_REQUEST);
+		}
+		docService.update(id, doc, file);
 		return new ResponseEntity<String>("Document has been updated", HttpStatus.OK);
 	}
 
@@ -67,5 +83,17 @@ public class DocumentController {
 	public ResponseEntity<String> deleteDocument(@PathVariable("id") long id) {
 		docService.deleteById(id);
 		return new ResponseEntity<String>("Document has been deleted", HttpStatus.OK);
+	}
+
+	private Document getDocFromJson(String jsonStr) throws JSONException {
+		JSONObject jsonObj = new JSONObject(jsonStr);
+		String description = jsonObj.getString("description");
+		String author = jsonObj.getString("author");
+		Boolean readOnly = jsonObj.getBoolean("readOnly");
+		Document doc = new Document();
+		doc.setDescription(description);
+		doc.setAuthor(author);
+		doc.setReadOnly(readOnly);
+		return doc;
 	}
 }
