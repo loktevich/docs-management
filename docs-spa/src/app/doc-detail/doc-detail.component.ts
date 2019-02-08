@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentsService } from '../service/documents.service';
-import { Location } from '@angular/common';
 import { Document } from '../model/document';
 import { StorageService } from '../service/storage.service';
 
@@ -19,7 +18,6 @@ export class DocDetailComponent implements OnInit {
     private storageService: StorageService,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
   ) { }
 
   ngOnInit() {
@@ -55,12 +53,12 @@ export class DocDetailComponent implements OnInit {
     this.docService.deleteDocument(docId).subscribe(
       data => {
         console.log(data);
+        this.router.navigateByUrl('/documents');
       },
       error => {
         console.log(error);
       }
     );
-    this.router.navigateByUrl('/documents');
   }
 
 }

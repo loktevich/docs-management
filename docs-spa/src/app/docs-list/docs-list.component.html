@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid app-container">
   <div class="row mt-4">
     <div class="col-12">
       <h2>Documents</h2>
@@ -46,8 +46,8 @@
 
           <!-- Color Column -->
           <ng-container matColumnDef="readOnly">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Read Only </mat-header-cell>
-            <mat-cell *matCellDef="let doc"> {{ doc.readOnly }} </mat-cell>
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Public </mat-header-cell>
+            <mat-cell *matCellDef="let doc"><span class="pr-4">{{ doc.readOnly ? 'NO' : 'YES' }}</span></mat-cell>
           </ng-container>
 
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

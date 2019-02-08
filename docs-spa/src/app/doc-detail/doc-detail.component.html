@@ -1,10 +1,10 @@
-<div class="container">
+<div class="container app-container">
   <div class="row mt-4">
     <div class="col-12">
       <h2>Details for document #{{ document.documentId }}</h2>
+      <h4 *ngIf="document.readOnly" class="text-warning">Read Only</h4>
       <hr>
       <h4>Description</h4>
-      <span class="text-warning" *ngIf="document.readOnly">Read Only</span>
       <p>{{ document.description }}</p>
       <h4>Document Name</h4>
       <p>{{ document.documentName }}</p>
@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="row mt-2 mb-4">
+  <div class="row mt-2 mb-2">
     <div class="col-12">
       <button mat-raised-button color="primary" (click)="cancel()" class="mr-3">Back</button>
       <button *ngIf="!document.readOnly" mat-raised-button color="accent" (click)="editDocPage(document.documentId); saveToStorage(document)" class="mr-3">Edit</button>

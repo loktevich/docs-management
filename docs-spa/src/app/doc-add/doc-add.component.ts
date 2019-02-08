@@ -68,6 +68,7 @@ export class DocAddComponent implements OnInit {
         this.docService.updateDocument(docId, document, fileForm.value.files[0]).subscribe(
           data => {
             console.log(data);
+            this.router.navigateByUrl('/documents');
           },
           error => {
             console.log(error);
@@ -77,6 +78,7 @@ export class DocAddComponent implements OnInit {
         this.docService.updateDocument(docId, document).subscribe(
           data => {
             console.log(data);
+            this.router.navigateByUrl('/documents');
           },
           error => {
             console.log(error);
@@ -88,13 +90,13 @@ export class DocAddComponent implements OnInit {
       this.docService.addDocument(fileForm.value.files[0], document).subscribe(
         data => {
           console.log(data);
+          this.router.navigateByUrl('/documents');
         },
         error => {
           console.log(error);
         }
       );
     }
-    this.router.navigateByUrl('/documents');
   }
 
   cancel(): void {

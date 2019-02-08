@@ -1,0 +1,11 @@
+.input-form {
+    min-width: 296px;
+}
+
+::ng-deep.attached-file .mat-form-field-infix {
+    width: 244px;
+}
+
+::ng-deep.attached-change .mat-form-field-infix {
+    width: 228px;
+}
