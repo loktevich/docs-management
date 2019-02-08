@@ -4,6 +4,7 @@ import { error } from 'util';
 import { Document } from '../model/document';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Router } from '@angular/router';
+import { StorageService } from '../service/storage.service';
 
 @Component({
   selector: 'app-docs-list',
@@ -20,6 +21,7 @@ export class DocsListComponent implements OnInit {
 
   constructor(
     private docService: DocumentsService,
+    private storageService: StorageService,
     private router: Router
   ) { }
 
@@ -47,6 +49,10 @@ export class DocsListComponent implements OnInit {
 
   showDetails(id: number): void {
     this.router.navigate(['documents', id]);
+  }
+
+  emptyStorage(): void {
+    this.storageService.emptyStorage();
   }
 
 }

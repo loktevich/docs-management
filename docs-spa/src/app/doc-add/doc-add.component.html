@@ -1,29 +1,23 @@
 <div class="container">
   <div class="row">
     <div class="col-12 mt-4">
-      <h2>Edit document</h2>
+      <h2>{{ pageTitle }}</h2>
       <hr>
 
       <form [formGroup]="documentForm" enctype="multipart/form-data" class="d-flex flex-column">
-
-        <!-- <label for="singleFile">Upload file</label>
-        <input id="singleFile" type="file" [fileUploadInputFor]="fileUploadQueue" />
-        <br>
-        <mat-file-upload-queue #fileUploadQueue [fileAlias]="'file'" [httpUrl]="'http://localhost:8180/jax-rs-jersey-application-sample'">
-          <mat-file-upload [file]="file" [id]="i" *ngFor="let file of fileUploadQueue.files; let i = index"></mat-file-upload>
-        </mat-file-upload-queue> -->
         <h4>File</h4>
-        <input type="file" formControlName="file">
-
+        <div class="custom-file">
+          <input #file type="file">
+        </div>
         <h4>Description</h4>
         <mat-form-field>
-          <textarea rows="5" matInput formControlName="description"></textarea>
+          <textarea #description rows="5" matInput formControlName="description"></textarea>
         </mat-form-field>
         <h4>Author</h4>
         <mat-form-field>
-          <input matInput formControlName="author" />
+          <input #author matInput formControlName="author" />
         </mat-form-field>
-        <mat-checkbox formControlName="readonly" color="primary">Read Only</mat-checkbox>
+        <mat-checkbox #readonly formControlName="readonly" color="primary">Read Only</mat-checkbox>
       </form>
 
     </div>
@@ -31,8 +25,9 @@
 
   <div class="row my-4">
     <div class="col-12">
-      <button mat-raised-button color="primary" (click)="saveDoc(file, description, author, readonly)" class="mr-3">Save Document</button>
-      <button mat-raised-button color="accent" (click)="goBack()">Cancel</button>
+      <button mat-raised-button color="primary" (click)="saveDoc(file.files[0], description.value, author.value, readonly.checked)"
+        class="mr-3">Save Document</button>
+      <button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
     </div>
   </div>
 </div>

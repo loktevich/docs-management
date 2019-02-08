@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentsService } from '../service/documents.service';
 import { Location } from '@angular/common';
 import { Document } from '../model/document';
+import { StorageService } from '../service/storage.service';
 
 @Component({
   selector: 'app-doc-detail',
@@ -11,12 +12,13 @@ import { Document } from '../model/document';
 })
 export class DocDetailComponent implements OnInit {
 
-  document: Document;
+  document = new Document();
 
   constructor(
+    private docService: DocumentsService,
+    private storageService: StorageService,
     private route: ActivatedRoute,
     private router: Router,
-    private docService: DocumentsService,
     private location: Location
   ) { }
 
@@ -44,8 +46,8 @@ export class DocDetailComponent implements OnInit {
     this.router.navigateByUrl('documents/edit/' + id);
   }
 
-  saveDoc(document: Document): void {
-    this.docService.setExistingDoc(document);
+  saveToStorage(document: Document): void {
+    this.storageService.saveToStorage(document);
   }
 
   deleteDoc(): void {
