@@ -31,9 +31,11 @@ export class DocumentsService {
     return this.http.delete(this.apiUrl + '/' + id);
   }
 
-  updateDocument(id: number, docFile: File, document: Document): Observable<any> {
+  updateDocument(id: number, document: Document, docFile?: File): Observable<any> {
     const formData = new FormData();
-    formData.append('docFile', docFile);
+    if (docFile) {
+      formData.append('docFile', docFile);
+    }
     formData.append('document', new Blob([JSON.stringify(document)], { type: 'application/json' }));
     return this.http.put(this.apiUrl + '/' + id, formData);
   }

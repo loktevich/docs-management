@@ -18,3 +18,19 @@
 .mat-row:hover {
     background-color: #eee;
 }
+
+.mat-column-documentId {
+    flex: 0 0 10%;
+}
+
+.mat-column-documentName {
+    flex: 1 1 30%;
+}
+
+.mat-column-author {
+    flex: 0 0 25%;
+}
+
+.mat-column-readOnly {
+    flex: 0 0 10%;
+}

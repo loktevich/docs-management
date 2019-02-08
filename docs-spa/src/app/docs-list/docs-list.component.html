@@ -18,12 +18,12 @@
     <div class="col-12">
       <div class="mat-elevation-z8 docs-table">
 
-        <mat-table [dataSource]="documents" matSort>
+        <mat-table [dataSource]="documents" matSort matSortActive="documentName" matSortDirection="asc">
 
           <!-- ID Column -->
           <ng-container matColumnDef="documentId">
             <mat-header-cell *matHeaderCellDef mat-sort-header> ID </mat-header-cell>
-            <mat-cell *matCellDef="let doc"> {{ doc.documentId }} </mat-cell>
+            <mat-cell *matCellDef="let doc">{{ doc.documentId }} </mat-cell>
           </ng-container>
 
           <!-- Name Column -->

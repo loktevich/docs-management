@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DocumentsService } from '../service/documents.service';
-import { error } from 'util';
 import { Document } from '../model/document';
 import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { Router } from '@angular/router';
@@ -26,8 +25,8 @@ export class DocsListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getDocumentList();
     this.emptyStorage();
+    this.getDocumentList();
     this.documents.sort = this.sort;
     this.documents.paginator = this.paginator;
   }
@@ -36,10 +35,10 @@ export class DocsListComponent implements OnInit {
     this.docService.getDocuments().subscribe(
       data => {
         this.documents.data = data;
+        console.log(data);
       },
-      // tslint:disable-next-line:no-shadowed-variable
       error => {
-        return console.log(error);
+        console.log(error);
       }
     );
   }

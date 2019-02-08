@@ -20,6 +20,7 @@ import {
   MatCheckboxModule
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     MatCheckboxModule,
     ReactiveFormsModule,
+    MaterialFileInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

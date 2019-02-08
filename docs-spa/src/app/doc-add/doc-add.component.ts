@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { DocumentsService } from '../service/documents.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Document } from '../model/document';
 import { StorageService } from '../service/storage.service';
+import { FileInput } from 'ngx-material-file-input';
 
 @Component({
   selector: 'app-doc-add',
@@ -14,6 +15,8 @@ import { StorageService } from '../service/storage.service';
 export class DocAddComponent implements OnInit {
 
   pageTitle = 'Add document';
+  fileTitle = 'Select File';
+  fileName = '';
   isEditing = false;
 
   constructor(
@@ -26,7 +29,8 @@ export class DocAddComponent implements OnInit {
   ) { }
 
   documentForm = this.fb.group({
-    file: [''],
+    newFile: [null],
+    editFile: [null],
     description: [''],
     author: [''],
     readonly: false
@@ -39,7 +43,9 @@ export class DocAddComponent implements OnInit {
   loadDocument(): void {
     const document: Document = this.storageService.loadFromStorage();
     if (document.documentId) {
+      this.fileName = document.documentName;
       this.pageTitle = 'Edit document';
+      this.fileTitle = 'Attached File';
       this.isEditing = true;
     }
     this.documentForm.controls['description'].setValue(document.description);
@@ -47,23 +53,36 @@ export class DocAddComponent implements OnInit {
     this.documentForm.controls['readonly'].setValue(document.readOnly);
   }
 
-  saveDoc(file: File, description: string, author: string, readonly: boolean): void {
+  saveDoc(description: string, author: string, readonly: boolean): void {
     const document = new Document();
     document.description = description;
     document.author = author;
     document.readOnly = readonly;
     if (this.isEditing) {
       const docId = +this.route.snapshot.paramMap.get('id');
-      this.docService.updateDocument(docId, file, document).subscribe(
-        data => {
-          console.log(data);
-        },
-        error => {
-          console.log(error);
-        }
-      );
+      const fileForm = this.documentForm.controls['editFile'];
+      if (fileForm && fileForm.value) {
+        this.docService.updateDocument(docId, document, fileForm.value.files[0]).subscribe(
+          data => {
+            console.log(data);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      } else {
+        this.docService.updateDocument(docId, document).subscribe(
+          data => {
+            console.log(data);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
     } else {
-      this.docService.addDocument(file, document).subscribe(
+      const fileForm = this.documentForm.controls['newFile'];
+      this.docService.addDocument(fileForm.value.files[0], document).subscribe(
         data => {
           console.log(data);
         },
