@@ -55,34 +55,38 @@ public class DocumentController {
 		try {
 			doc = getDocFromJson(document);
 		} catch (JSONException e) {
-			return new ResponseEntity<String>("Parsing error", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("\"Parsing error\"", HttpStatus.BAD_REQUEST);
 		}
 		docService.create(doc, file);
-		return new ResponseEntity<String>("Document has been added", HttpStatus.OK);
+		return new ResponseEntity<String>("\"Document has been added\"", HttpStatus.OK);
 	}
 
 	@PutMapping("/documents/{id}")
 	public ResponseEntity<String> updateDocument(@PathVariable("id") long id, @RequestPart("document") String document,
-			@RequestPart("docFile") MultipartFile file) {
+			@RequestPart(value = "docFile", required = false) MultipartFile file) {
 		try {
 			docService.getById(id);
 		} catch (EntityNotFoundException e) {
-			return new ResponseEntity<String>("Document not found", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("\"Document not found\"", HttpStatus.NOT_FOUND);
 		}
 		Document doc = new Document();
 		try {
 			doc = getDocFromJson(document);
 		} catch (JSONException e) {
-			return new ResponseEntity<String>("Parsing error", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("\"Parsing error\"", HttpStatus.BAD_REQUEST);
 		}
-		docService.update(id, doc, file);
-		return new ResponseEntity<String>("Document has been updated", HttpStatus.OK);
+		if (file == null || file.isEmpty()) {
+			docService.update(id, doc);
+		} else {
+			docService.update(id, doc, file);
+		}
+		return new ResponseEntity<String>("\"Document has been updated\"", HttpStatus.OK);
 	}
 
 	@DeleteMapping("/documents/{id}")
 	public ResponseEntity<String> deleteDocument(@PathVariable("id") long id) {
 		docService.deleteById(id);
-		return new ResponseEntity<String>("Document has been deleted", HttpStatus.OK);
+		return new ResponseEntity<String>("\"Document has been deleted\"", HttpStatus.OK);
 	}
 
 	private Document getDocFromJson(String jsonStr) throws JSONException {

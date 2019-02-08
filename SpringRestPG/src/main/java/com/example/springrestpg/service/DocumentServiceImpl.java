@@ -73,6 +73,16 @@ public class DocumentServiceImpl implements DocumentService<Document> {
 	}
 
 	@Override
+	public Document update(long id, Document document) {
+		Document existingDocument = repository.getOne(id);
+		existingDocument.setDescription(document.getDescription());
+		existingDocument.setAuthor(document.getAuthor());
+		existingDocument.setCreationDate(new Date(new java.util.Date().getTime()));
+		existingDocument.setReadOnly(document.isReadOnly());
+		return repository.save(existingDocument);
+	}
+
+	@Override
 	public void deleteById(long id) {
 		repository.deleteById(id);
 	}
