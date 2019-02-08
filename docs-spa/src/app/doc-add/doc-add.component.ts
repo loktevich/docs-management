@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { DocumentsService } from '../service/documents.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { Document } from '../model/document';
 import { StorageService } from '../service/storage.service';
-import { FileInput } from 'ngx-material-file-input';
+import { FileValidator } from 'ngx-material-file-input';
+
+// spring.servlet.multipart.max-file-size set to 20MB .In bytes
+const MAX_FILE_SIZE = 20971520;
 
 @Component({
   selector: 'app-doc-add',
@@ -14,25 +16,25 @@ import { FileInput } from 'ngx-material-file-input';
 })
 export class DocAddComponent implements OnInit {
 
-  pageTitle = 'Add document';
-  fileTitle = 'Select File';
+  pageTitle = 'Add new document';
+  fileTitle = 'File';
   fileName = '';
   isEditing = false;
+  editValidationError = false;
 
   constructor(
     private docService: DocumentsService,
     private storageService: StorageService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
+    private router: Router
   ) { }
 
   documentForm = this.fb.group({
-    newFile: [null],
+    newFile: [null, [Validators.required, FileValidator.maxContentSize(MAX_FILE_SIZE)]],
     editFile: [null],
-    description: [''],
-    author: [''],
+    description: ['', Validators.required],
+    author: ['', Validators.required],
     readonly: false
   });
 
@@ -44,7 +46,7 @@ export class DocAddComponent implements OnInit {
     const document: Document = this.storageService.loadFromStorage();
     if (document.documentId) {
       this.fileName = document.documentName;
-      this.pageTitle = 'Edit document';
+      this.pageTitle = 'Edit document #' + document.documentId;
       this.fileTitle = 'Attached File';
       this.isEditing = true;
     }
@@ -61,6 +63,7 @@ export class DocAddComponent implements OnInit {
     if (this.isEditing) {
       const docId = +this.route.snapshot.paramMap.get('id');
       const fileForm = this.documentForm.controls['editFile'];
+      this.editValidationError = this.documentForm.controls['description'].invalid || this.documentForm.controls['author'].invalid;
       if (fileForm && fileForm.value) {
         this.docService.updateDocument(docId, document, fileForm.value.files[0]).subscribe(
           data => {
@@ -96,7 +99,8 @@ export class DocAddComponent implements OnInit {
 
   cancel(): void {
     if (this.isEditing) {
-      this.location.back();
+      const docId = +this.route.snapshot.paramMap.get('id');
+      this.router.navigateByUrl('/documents/' + docId);
     } else {
       this.router.navigateByUrl('/documents');
     }

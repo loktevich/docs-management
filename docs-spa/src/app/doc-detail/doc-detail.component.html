@@ -1,6 +1,6 @@
 <div class="container">
-  <div class="row">
-    <div class="col-12 mt-4">
+  <div class="row mt-4">
+    <div class="col-12">
       <h2>Details for document #{{ document.documentId }}</h2>
       <hr>
       <h4>Description</h4>
@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="row mb-4">
+  <div class="row mt-2 mb-4">
     <div class="col-12">
       <button mat-raised-button color="primary" (click)="cancel()" class="mr-3">Back</button>
       <button *ngIf="!document.readOnly" mat-raised-button color="accent" (click)="editDocPage(document.documentId); saveToStorage(document)" class="mr-3">Edit</button>
