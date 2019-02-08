@@ -19,6 +19,7 @@ export class StorageService {
   }
 
   emptyStorage(): void {
+    this.docInStorage = new Document();
     this.docInStorage.description = '';
     this.docInStorage.author = '';
     this.docInStorage.readOnly = false;

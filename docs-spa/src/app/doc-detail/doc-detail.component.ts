@@ -38,8 +38,8 @@ export class DocDetailComponent implements OnInit {
     );
   }
 
-  goBack(): void {
-    this.location.back();
+  cancel(): void {
+    this.router.navigateByUrl('/documents');
   }
 
   editDocPage(id: number): void {

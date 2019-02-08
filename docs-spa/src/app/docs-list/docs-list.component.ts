@@ -27,6 +27,7 @@ export class DocsListComponent implements OnInit {
 
   ngOnInit() {
     this.getDocumentList();
+    this.emptyStorage();
     this.documents.sort = this.sort;
     this.documents.paginator = this.paginator;
   }

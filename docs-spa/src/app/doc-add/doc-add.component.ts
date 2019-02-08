@@ -76,8 +76,11 @@ export class DocAddComponent implements OnInit {
   }
 
   cancel(): void {
-    this.location.back();
-    this.storageService.emptyStorage();
+    if (this.isEditing) {
+      this.location.back();
+    } else {
+      this.router.navigateByUrl('/documents');
+    }
   }
 
 }
