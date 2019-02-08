@@ -8,19 +8,9 @@ import { Document } from '../model/document';
 })
 export class DocumentsService {
 
-  existingDoc = new Document();
-
   private apiUrl = '/api/documents';
 
   constructor(private http: HttpClient) { }
-
-  setExistingDoc(document: Document): void {
-    this.existingDoc = document;
-  }
-
-  getExistingDoc(): Document {
-    return this.existingDoc;
-  }
 
   getDocuments(): Observable<any> {
     return this.http.get(this.apiUrl);
