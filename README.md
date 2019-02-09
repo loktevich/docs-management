@@ -12,9 +12,9 @@ You can change this in`SpringRestPG/src/main/resources/application.properties`
 ## Starting the application
 
 1. Clone project.
-2. Start REST server from within project directory using shell script:
+2. Start REST server from within `SpringRestPG` directory using shell script:
 
-       gradlew bootRun
+       ./gradlew bootRun
 
     or batch script for Windows:
 
@@ -22,12 +22,12 @@ You can change this in`SpringRestPG/src/main/resources/application.properties`
 
     This will start a server locally at port 8080.
 
-3. Install node_modules for `docs-spa` client application:
+3. Install node_modules for `docs-spa` client application from within `docs-spa`:
 
-       docs-spa/npm install
+       npm install
 
     And start app:
 
-       docs-spa/npm run start
+       npm run start
 
     This will start client application locally at port 4200.
