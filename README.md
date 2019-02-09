@@ -28,6 +28,6 @@ You can change this in`SpringRestPG/src/main/resources/application.properties`
 
     And start app:
 
-       npm run start
+       docs-spa/npm run start
 
     This will start client application locally at port 4200.
