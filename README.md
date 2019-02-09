@@ -14,11 +14,11 @@ You can change this in`SpringRestPG/src/main/resources/application.properties`
 1. Clone project.
 2. Start REST server from within project directory using shell script:
 
-       SpringRestPG/gradlew bootRun
+       gradlew bootRun
 
     or batch script for Windows:
 
-       SpringRestPG\gradlew.bat bootRun
+       gradlew.bat bootRun
 
     This will start a server locally at port 8080.
 
