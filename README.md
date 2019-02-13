@@ -34,4 +34,4 @@ You can change this in`SpringRestPG/src/main/resources/application.properties`
 
 ## API Documentation
 
-The documentation for API is located at http://localhost:8080/swagger-ui.html#/document-controller (when REST server ia started)
+The documentation for API is located at http://localhost:8080/swagger-ui.html#/document-controller (when REST server is started)
