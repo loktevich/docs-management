@@ -31,3 +31,7 @@ You can change this in`SpringRestPG/src/main/resources/application.properties`
        npm run start
 
     This will start client application locally at port 4200.
+
+## API Documentation
+
+The documentation for API is located at http://localhost:8080/swagger-ui.html#/document-controller (when REST server ia started)
