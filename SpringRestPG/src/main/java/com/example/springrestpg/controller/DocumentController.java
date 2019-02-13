@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import com.example.springrestpg.model.Document;
 import com.example.springrestpg.service.DocumentService;
 
@@ -33,21 +36,25 @@ import com.example.springrestpg.service.DocumentService;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
+@Api(value = "Docs Management System", description = "Operations for Docs Management System")
 public class DocumentController {
 
 	@Autowired
 	DocumentService<Document> docService;
 
+	@ApiOperation(value = "View a list of documents", response = List.class)
 	@GetMapping("/documents")
 	public List<Document> getAllDocuments() {
 		return docService.getAll();
 	}
 
+	@ApiOperation(value = "Search the document with an ID", response = Document.class)
 	@GetMapping("/documents/{id}")
 	public Document getDocumentById(@PathVariable("id") long id) {
 		return docService.getById(id);
 	}
 
+	@ApiOperation(value = "Add the document")
 	@PostMapping(value = "/documents/add", consumes = { "multipart/form-data" })
 	public ResponseEntity<String> addDocument(@RequestPart("document") String document,
 			@RequestPart("docFile") MultipartFile file) {
@@ -61,6 +68,7 @@ public class DocumentController {
 		return new ResponseEntity<String>("\"Document has been added\"", HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Update the document with an ID")
 	@PutMapping("/documents/{id}")
 	public ResponseEntity<String> updateDocument(@PathVariable("id") long id, @RequestPart("document") String document,
 			@RequestPart(value = "docFile", required = false) MultipartFile file) {
@@ -83,6 +91,7 @@ public class DocumentController {
 		return new ResponseEntity<String>("\"Document has been updated\"", HttpStatus.OK);
 	}
 
+	@ApiOperation(value = "Delete the document with an ID")
 	@DeleteMapping("/documents/{id}")
 	public ResponseEntity<String> deleteDocument(@PathVariable("id") long id) {
 		docService.deleteById(id);

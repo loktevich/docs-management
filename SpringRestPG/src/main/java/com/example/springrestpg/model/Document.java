@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
 
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * @author Dmitry Loktevich
  *
@@ -39,27 +41,35 @@ public class Document {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@ApiModelProperty(value = "The generated document ID")
 	private long documentId;
 
 	@Column(name = "name")
+	@ApiModelProperty(value = "The name of the document")
 	private String documentName;
 
 	@Column(name = "description")
+	@ApiModelProperty(value = "The description of the document")
 	private String description;
 
 	@Column(name = "date")
+	@ApiModelProperty(value = "The date when document had been created/modified")
 	private Date creationDate;
 
 	@Column(name = "author")
+	@ApiModelProperty(value = "The author of the document")
 	private String author;
 
 	@Column(name = "data")
+	@ApiModelProperty(value = "The binary document data")
 	private byte[] documentData;
 
 	@Column(name = "type")
+	@ApiModelProperty(value = "The type of the document")
 	private String documentType;
 
 	@Column(name = "readonly")
+	@ApiModelProperty(value = "The flag to indicate if document is readonly")
 	private Boolean readOnly;
 
 	public long getDocumentId() {
