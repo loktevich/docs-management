@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
@@ -61,6 +62,7 @@ public class Document {
 	private String author;
 
 	@Column(name = "data")
+	@Lob
 	@ApiModelProperty(value = "The binary document data")
 	private byte[] documentData;
 
