@@ -17,7 +17,8 @@ import {
   MatInputModule,
   MatButtonModule,
   MatIconModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatTooltipModule
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
@@ -43,6 +44,7 @@ import { MaterialFileInputModule } from 'ngx-material-file-input';
     MatButtonModule,
     MatIconModule,
     MatCheckboxModule,
+    MatTooltipModule,
     ReactiveFormsModule,
     MaterialFileInputModule
   ],

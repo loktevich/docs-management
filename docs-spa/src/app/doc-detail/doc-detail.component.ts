@@ -17,7 +17,7 @@ export class DocDetailComponent implements OnInit {
     private docService: DocumentsService,
     private storageService: StorageService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -34,6 +34,11 @@ export class DocDetailComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  loadDocument(id: number): void {
+    const fileUrl = `/api/documents/${id}/download`;
+    window.open(fileUrl, '_self');
   }
 
   cancel(): void {

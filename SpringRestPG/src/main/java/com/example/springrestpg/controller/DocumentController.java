@@ -10,7 +10,11 @@ import javax.persistence.EntityNotFoundException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -96,6 +100,18 @@ public class DocumentController {
 	public ResponseEntity<String> deleteDocument(@PathVariable("id") long id) {
 		docService.deleteById(id);
 		return new ResponseEntity<String>("\"Document has been deleted\"", HttpStatus.OK);
+	}
+
+	@ApiOperation(value = "Download the document with an ID")
+	@GetMapping("/documents/{id}/download")
+	public ResponseEntity<Resource> downloadFile(@PathVariable("id") long id) {
+		Document document = docService.getById(id);
+		Resource fileData = new ByteArrayResource(document.getDocumentData());
+		MediaType fileType = MediaType.parseMediaType(document.getDocumentType());
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentDispositionFormData("attachment", document.getDocumentName());
+		headers.setContentType(fileType);
+		return new ResponseEntity<Resource>(fileData, headers, HttpStatus.OK);
 	}
 
 	private Document getDocFromJson(String jsonStr) throws JSONException {
