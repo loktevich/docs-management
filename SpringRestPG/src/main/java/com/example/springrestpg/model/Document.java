@@ -26,20 +26,6 @@ import io.swagger.annotations.ApiModelProperty;
 @Proxy(lazy = false)
 public class Document {
 
-	public Document() {
-	}
-
-	public Document(String documentName, String description, Date creationDate, String author, byte[] documentData,
-			String documentType, Boolean readOnly) {
-		this.documentName = documentName;
-		this.description = description;
-		this.creationDate = creationDate;
-		this.author = author;
-		this.documentData = documentData;
-		this.documentType = documentType;
-		this.readOnly = readOnly;
-	}
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@ApiModelProperty(value = "The generated document ID")
@@ -73,6 +59,20 @@ public class Document {
 	@Column(name = "readonly")
 	@ApiModelProperty(value = "The flag to indicate if document is readonly")
 	private Boolean readOnly;
+
+	public Document() {
+	}
+
+	public Document(String documentName, String description, Date creationDate, String author, byte[] documentData,
+			String documentType, Boolean readOnly) {
+		this.documentName = documentName;
+		this.description = description;
+		this.creationDate = creationDate;
+		this.author = author;
+		this.documentData = documentData;
+		this.documentType = documentType;
+		this.readOnly = readOnly;
+	}
 
 	public long getDocumentId() {
 		return documentId;
