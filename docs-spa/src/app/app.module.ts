@@ -22,13 +22,15 @@ import {
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DocsListComponent,
     DocDetailComponent,
-    DocAddComponent
+    DocAddComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

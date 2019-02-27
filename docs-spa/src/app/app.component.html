@@ -6,12 +6,16 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavId">
-      <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+      <ul *ngIf="docService.isAuthorized()" class="navbar-nav ml-auto mt-2 mt-lg-0">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/documents" routerLinkActive="active">Documents <span class="sr-only">(current)</span></a>
+          <a class="nav-link" routerLink="/documents" routerLinkActive="active">Documents <span
+              class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/add" routerLinkActive="active" (click)="emptyStorage()">Add document</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/login" (click)="logout()">Logout</a>
         </li>
       </ul>
     </div>

@@ -21,7 +21,11 @@ export class DocDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getDocument();
+    if (this.docService.isAuthorized()) {
+      this.getDocument();
+    } else {
+      this.router.navigate(['login']);
+    }
   }
 
   getDocument(): void {
@@ -31,14 +35,15 @@ export class DocDetailComponent implements OnInit {
         this.document = data;
       },
       error => {
-        console.log(error);
+        if (error.status === 401) {
+          this.router.navigate(['login']);
+        }
       }
     );
   }
 
   loadDocument(id: number): void {
-    const fileUrl = `/api/documents/${id}/download`;
-    window.open(fileUrl, '_self');
+    this.docService.loadDocument(id);
   }
 
   cancel(): void {
@@ -61,7 +66,9 @@ export class DocDetailComponent implements OnInit {
         this.router.navigateByUrl('/documents');
       },
       error => {
-        console.log(error);
+        if (error.status === 401) {
+          this.router.navigate(['login']);
+        }
       }
     );
   }

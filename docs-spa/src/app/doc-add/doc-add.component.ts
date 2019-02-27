@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Document } from '../model/document';
 import { StorageService } from '../service/storage.service';
 import { FileValidator } from 'ngx-material-file-input';
+import { delay } from 'q';
 
 // spring.servlet.multipart.max-file-size set to 20MB .In bytes
 const MAX_FILE_SIZE = 20971520;
@@ -20,7 +21,6 @@ export class DocAddComponent implements OnInit {
   fileTitle = 'File';
   fileName = '';
   isEditing = false;
-  editValidationError = false;
 
   constructor(
     private docService: DocumentsService,
@@ -63,7 +63,6 @@ export class DocAddComponent implements OnInit {
     if (this.isEditing) {
       const docId = +this.route.snapshot.paramMap.get('id');
       const fileForm = this.documentForm.controls['editFile'];
-      this.editValidationError = this.documentForm.controls['description'].invalid || this.documentForm.controls['author'].invalid;
       if (fileForm && fileForm.value) {
         this.docService.updateDocument(docId, document, fileForm.value.files[0]).subscribe(
           data => {
@@ -71,7 +70,9 @@ export class DocAddComponent implements OnInit {
             this.router.navigateByUrl('/documents');
           },
           error => {
-            console.log(error);
+            if (error.status === 401) {
+              this.router.navigate(['login']);
+            }
           }
         );
       } else {
@@ -81,7 +82,9 @@ export class DocAddComponent implements OnInit {
             this.router.navigateByUrl('/documents');
           },
           error => {
-            console.log(error);
+            if (error.status === 401) {
+              this.router.navigate(['login']);
+            }
           }
         );
       }
@@ -93,7 +96,9 @@ export class DocAddComponent implements OnInit {
           this.router.navigateByUrl('/documents');
         },
         error => {
-          console.log(error);
+          if (error.status === 401) {
+            this.router.navigate(['login']);
+          }
         }
       );
     }

@@ -36,10 +36,12 @@ export class DocsListComponent implements OnInit {
     this.docService.getDocuments().subscribe(
       data => {
         this.documents.data = data;
-        console.log(data);
+        this.docService.setAuthorized(true);
       },
       error => {
-        console.log(error);
+        if (error.status === 401) {
+          this.router.navigate(['login']);
+        }
       }
     );
   }

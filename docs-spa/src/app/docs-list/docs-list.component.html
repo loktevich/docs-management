@@ -1,4 +1,4 @@
-<div class="container-fluid app-container">
+<div *ngIf="docService.isAuthorized()" class="container-fluid app-container">
   <div class="row mt-4">
     <div class="col-12">
       <h2>Documents</h2>
@@ -59,6 +59,6 @@
     </div>
   </div>
 </div>
-<a mat-fab routerLink="/add" color="primary" (click)="emptyStorage()" class="position-fixed fixed-bottom ml-auto mr-4 mb-4">
+<a *ngIf="docService.isAuthorized()" mat-fab routerLink="/add" color="primary" (click)="emptyStorage()" class="position-fixed fixed-bottom ml-auto mr-4 mb-4">
   <mat-icon aria-label="Add button">add</mat-icon>
 </a>
