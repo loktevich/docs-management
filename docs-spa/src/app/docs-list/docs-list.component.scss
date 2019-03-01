@@ -39,3 +39,12 @@
     flex: 0 1 17%;
     justify-content: flex-end;
 }
+
+.hide {
+    display: none;
+}
+
+mat-footer-row mat-footer-cell {
+    justify-content: center;
+    font: italic;
+}

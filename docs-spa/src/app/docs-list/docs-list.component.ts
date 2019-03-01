@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { DocumentsService } from '../service/documents.service';
 import { Document } from '../model/document';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, MatSortable } from '@angular/material';
 import { Router } from '@angular/router';
 import { StorageService } from '../service/storage.service';
 
@@ -10,7 +10,7 @@ import { StorageService } from '../service/storage.service';
   templateUrl: './docs-list.component.html',
   styleUrls: ['./docs-list.component.scss']
 })
-export class DocsListComponent implements OnInit {
+export class DocsListComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['documentId', 'documentName', 'author', 'creationDate', 'readOnly'];
   documents = new MatTableDataSource<Document>();
@@ -25,18 +25,25 @@ export class DocsListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.emptyStorage();
     this.getDocumentList();
-    this.documents.sortingDataAccessor = (data, header) => data[header];
+  }
+
+  ngAfterViewInit() {
+    this.documents.filterPredicate = (data: Document, filter: string) => {
+      return data.documentId.toString().indexOf(filter) !== -1
+        || data.documentName.toLowerCase().indexOf(filter) !== -1
+        || data.author.toLowerCase().indexOf(filter) !== -1;
+    };
     this.documents.sort = this.sort;
+    this.documents.sortingDataAccessor = (data, header) => data[header];
     this.documents.paginator = this.paginator;
   }
 
   getDocumentList(): void {
     this.docService.getDocuments().subscribe(
       data => {
-        this.documents.data = data;
         this.docService.setAuthorized(true);
+        this.documents.data = data as Document[];
       },
       error => {
         if (error.status === 401) {
