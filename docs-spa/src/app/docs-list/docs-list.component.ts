@@ -35,7 +35,14 @@ export class DocsListComponent implements OnInit, AfterViewInit {
         || data.author.toLowerCase().indexOf(filter) !== -1;
     };
     this.documents.sort = this.sort;
-    this.documents.sortingDataAccessor = (data, header) => data[header];
+    this.documents.sortingDataAccessor = (data: Document, header: string) => {
+      switch (header) {
+        case 'creationDate': return new Date(data.creationDate);
+        case 'documentId': return data[header];
+        case 'readOnly': return data[header];
+        default: return data[header].toLowerCase();
+      }
+    };
     this.documents.paginator = this.paginator;
   }
 
