@@ -12,6 +12,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,8 +49,23 @@ public class DocumentController {
 	@Autowired
 	DocumentService<Document> docService;
 
+	@ApiOperation(value = "Get a page of documents", response = Page.class)
+	@GetMapping(value = "/documents", params = { "p", "s", "d", "pr" })
+	public Page<Document> getPaginated(@RequestParam("p") int page, @RequestParam("s") int size,
+			@RequestParam("d") String direction, @RequestParam("pr") String properties) {
+		Sort.Direction sortDirection = Sort.Direction.ASC;
+		if (direction.equals("desc")) {
+			sortDirection = Sort.Direction.DESC;
+		}
+		Page<Document> resultPage = docService.findPaginated(page, size, sortDirection, properties);
+		if (page > resultPage.getTotalPages()) {
+			throw new RuntimeException();
+		}
+		return resultPage;
+	}
+
 	@ApiOperation(value = "View a list of documents", response = List.class)
-	@GetMapping("/documents")
+	@GetMapping("/documents/all")
 	public List<Document> getAllDocuments() {
 		return docService.getAll();
 	}

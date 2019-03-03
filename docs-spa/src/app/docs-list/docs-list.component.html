@@ -13,7 +13,7 @@
           <mat-icon>clear</mat-icon>
         </button>
       </mat-form-field>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="5" showFirstLastButtons></mat-paginator>
+      <mat-paginator #paginator [pageSizeOptions]="[2, 5, 10, 25]" [pageSize]="5" showFirstLastButtons (page)="getPage($event)"></mat-paginator>
     </div>
   </div>
 
@@ -21,7 +21,7 @@
     <div class="col-12">
       <div class="mat-elevation-z8 docs-table">
 
-        <mat-table [dataSource]="documents" matSort matSortDirection="asc" matSortDisableClear>
+        <mat-table [dataSource]="documents" matSort matSortActive="documentName" matSortDirection="asc" matSortDisableClear (matSortChange)=sortPage($event)>
 
           <!-- ID Column -->
           <ng-container matColumnDef="documentId">

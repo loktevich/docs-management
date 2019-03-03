@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { DocumentsService } from '../service/documents.service';
 import { Document } from '../model/document';
-import { MatTableDataSource, MatPaginator, MatSort, MatSortable } from '@angular/material';
+import { MatTableDataSource, MatPaginator, MatSort, PageEvent, Sort } from '@angular/material';
 import { Router } from '@angular/router';
 import { StorageService } from '../service/storage.service';
 
@@ -12,6 +12,7 @@ import { StorageService } from '../service/storage.service';
 })
 export class DocsListComponent implements OnInit, AfterViewInit {
 
+  pageEvent: PageEvent;
   displayedColumns: string[] = ['documentId', 'documentName', 'author', 'creationDate', 'readOnly'];
   documents = new MatTableDataSource<Document>();
 
@@ -25,10 +26,14 @@ export class DocsListComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.getDocumentList();
+    this.pageEvent = new PageEvent();
+    this.pageEvent.pageSize = 5;
+    this.pageEvent.pageIndex = 0;
+    // this.getPage(this.pageEvent);
   }
 
   ngAfterViewInit() {
+    this.getPage(this.pageEvent);
     this.documents.filterPredicate = (data: Document, filter: string) => {
       return data.documentId.toString().indexOf(filter) !== -1
         || data.documentName.toLowerCase().indexOf(filter) !== -1
@@ -43,19 +48,36 @@ export class DocsListComponent implements OnInit, AfterViewInit {
         default: return data[header].toLowerCase();
       }
     };
-    this.documents.paginator = this.paginator;
   }
 
-  getDocumentList(): void {
-    this.docService.getDocuments().subscribe(
+  getPage(event: PageEvent): void {
+    const pageIndex = event.pageIndex;
+    const pageSize = event.pageSize;
+    const direction = this.sort.direction.toString();
+    const props = this.sort.active;
+    this.docService.getPage(pageIndex, pageSize, direction, props).subscribe(
       data => {
         this.docService.setAuthorized(true);
-        this.documents.data = data as Document[];
+        this.documents.data = data.content as Document[];
+        this.paginator.length = data.totalElements;
       },
       error => {
         if (error.status === 401) {
           this.router.navigate(['login']);
         }
+      }
+    );
+  }
+
+  sortPage(event: Sort): void {
+    const pageIndex = 0;
+    const pageSize = this.paginator.pageSize;
+    const direction = event.direction.toString();
+    const props = event.active;
+    this.docService.getPage(pageIndex, pageSize, direction, props).subscribe(
+      data => {
+        this.documents.data = data.content as Document[];
+        this.paginator.pageIndex = 0;
       }
     );
   }

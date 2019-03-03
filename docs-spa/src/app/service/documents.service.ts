@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Document } from '../model/document';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -22,42 +21,46 @@ export class DocumentsService {
     return this.authorized;
   }
 
-  getDocuments(): Observable<any> {
+  headers(): HttpHeaders {
     const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(sessionStorage.getItem('token')) });
-    return this.http.get(this.apiUrl, { headers });
+    return headers;
+  }
+
+  getPage(pageIndex: number, pageSize: number, direction: string, props: string): Observable<any> {
+    const params = new HttpParams()
+      .set('p', pageIndex.toString())
+      .set('s', pageSize.toString())
+      .set('d', direction)
+      .set('pr', props);
+    return this.http.get(this.apiUrl, { headers: this.headers(), params: params });
   }
 
   getDocument(id: number): Observable<any> {
-    const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(sessionStorage.getItem('token')) });
-    return this.http.get(this.apiUrl + '/' + id, { headers });
+    return this.http.get(this.apiUrl + '/' + id, { headers: this.headers() });
   }
 
   addDocument(docFile: File, document: Document): Observable<any> {
-    const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(sessionStorage.getItem('token')) });
     const formData = new FormData();
     formData.append('docFile', docFile);
     formData.append('document', new Blob([JSON.stringify(document)], { type: 'application/json' }));
-    return this.http.post(this.apiUrl + '/add', formData, { headers });
+    return this.http.post(this.apiUrl + '/add', formData, { headers: this.headers() });
   }
 
   deleteDocument(id: number): Observable<any> {
-    const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(sessionStorage.getItem('token')) });
-    return this.http.delete(this.apiUrl + '/' + id, { headers });
+    return this.http.delete(this.apiUrl + '/' + id, { headers: this.headers() });
   }
 
   updateDocument(id: number, document: Document, docFile?: File): Observable<any> {
-    const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(sessionStorage.getItem('token')) });
     const formData = new FormData();
     if (docFile) {
       formData.append('docFile', docFile);
     }
     formData.append('document', new Blob([JSON.stringify(document)], { type: 'application/json' }));
-    return this.http.put(this.apiUrl + '/' + id, formData, { headers });
+    return this.http.put(this.apiUrl + '/' + id, formData, { headers: this.headers() });
   }
 
   loadDocument(id: number): void {
     const fileUrl = `${this.apiUrl}/${id}/download`;
     window.open(fileUrl, '_self');
   }
-
 }
