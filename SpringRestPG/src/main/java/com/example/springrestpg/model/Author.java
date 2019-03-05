@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModelProperty;
 
 /**
@@ -33,6 +35,7 @@ public class Author {
     @ApiModelProperty(value = "Author's fullname")
     private String fullName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Document> documents;
 
@@ -53,6 +56,14 @@ public class Author {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
     }
 
     @Override

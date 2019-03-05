@@ -35,6 +35,7 @@ import io.swagger.annotations.ApiOperation;
 
 import com.example.springrestpg.model.Author;
 import com.example.springrestpg.model.Document;
+import com.example.springrestpg.service.AuthorService;
 import com.example.springrestpg.service.DocumentService;
 
 /**
@@ -49,6 +50,9 @@ public class DocumentController {
 
 	@Autowired
 	DocumentService<Document> docService;
+
+	@Autowired
+	AuthorService<Author> authorService;
 
 	@ApiOperation(value = "Get a page of documents", response = Page.class)
 	@GetMapping(value = "/documents", params = { "p", "s", "d", "pr" })
@@ -86,6 +90,8 @@ public class DocumentController {
 			doc = getDocFromJson(document);
 		} catch (JSONException e) {
 			return new ResponseEntity<String>("\"Parsing error\"", HttpStatus.BAD_REQUEST);
+		} catch (EntityNotFoundException e) {
+			return new ResponseEntity<String>("\"Author not found\"", HttpStatus.NOT_FOUND);
 		}
 		docService.create(doc, file);
 		return new ResponseEntity<String>("\"Document has been added\"", HttpStatus.OK);
@@ -105,6 +111,8 @@ public class DocumentController {
 			doc = getDocFromJson(document);
 		} catch (JSONException e) {
 			return new ResponseEntity<String>("\"Parsing error\"", HttpStatus.BAD_REQUEST);
+		} catch (EntityNotFoundException e) {
+			return new ResponseEntity<String>("\"Author not found\"", HttpStatus.NOT_FOUND);
 		}
 		if (file == null || file.isEmpty()) {
 			docService.update(id, doc);
@@ -133,14 +141,11 @@ public class DocumentController {
 		return new ResponseEntity<Resource>(fileData, headers, HttpStatus.OK);
 	}
 
-	private Document getDocFromJson(String jsonStr) throws JSONException {
+	private Document getDocFromJson(String jsonStr) throws JSONException, EntityNotFoundException {
 		JSONObject jsonObj = new JSONObject(jsonStr);
 		String description = jsonObj.getString("description");
 		long authorId = jsonObj.getLong("authorId");
-
-		// TODO: findAuthorById(long id) method
-		Author author = findAuthorById(authorId);
-
+		Author author = authorService.getById(authorId);
 		Boolean readOnly = jsonObj.getBoolean("readOnly");
 		Document doc = new Document();
 		doc.setDescription(description);
