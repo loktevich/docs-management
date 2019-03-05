@@ -42,7 +42,8 @@ export class DocumentsService {
   addDocument(docFile: File, document: Document): Observable<any> {
     const formData = new FormData();
     formData.append('docFile', docFile);
-    formData.append('document', new Blob([JSON.stringify(document)], { type: 'application/json' }));
+    const restDocument = this.createRestDoc(document);
+    formData.append('document', new Blob([JSON.stringify(restDocument)], { type: 'application/json' }));
     return this.http.post(this.apiUrl + '/add', formData, { headers: this.headers() });
   }
 
@@ -55,12 +56,21 @@ export class DocumentsService {
     if (docFile) {
       formData.append('docFile', docFile);
     }
-    formData.append('document', new Blob([JSON.stringify(document)], { type: 'application/json' }));
+    const restDocument = this.createRestDoc(document);
+    formData.append('document', new Blob([JSON.stringify(restDocument)], { type: 'application/json' }));
     return this.http.put(this.apiUrl + '/' + id, formData, { headers: this.headers() });
   }
 
   loadDocument(id: number): void {
     const fileUrl = `${this.apiUrl}/${id}/download`;
     window.open(fileUrl, '_self');
+  }
+
+  createRestDoc(document: Document): Object {
+    return {
+      description: document.description,
+      authorId: document.author.authorId,
+      readOnly: document.readOnly
+    };
   }
 }

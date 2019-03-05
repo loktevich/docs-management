@@ -28,7 +28,7 @@ export class DocDetailComponent implements OnInit {
     const docId = +this.route.snapshot.paramMap.get('id');
     this.docService.getDocument(docId).subscribe(
       data => {
-        this.document = data;
+        this.document = data as Document;
       },
       error => {
         if (error.status === 401) {

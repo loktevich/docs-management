@@ -1,9 +1,11 @@
+import { DocumentAuthor } from './author';
+
 export class Document {
     documentId: number;
     documentName: string;
     description: string;
     creationDate: Date;
-    authorId: number;
+    author: DocumentAuthor;
     documentType: string;
     readOnly: boolean;
 }

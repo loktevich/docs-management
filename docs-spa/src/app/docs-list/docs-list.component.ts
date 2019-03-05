@@ -4,6 +4,8 @@ import { Document } from '../model/document';
 import { MatTableDataSource, MatPaginator, MatSort, PageEvent, Sort } from '@angular/material';
 import { Router } from '@angular/router';
 import { StorageService } from '../service/storage.service';
+import { DocumentAuthor } from '../model/author';
+import { AuthorService } from '../service/author.service';
 
 @Component({
   selector: 'app-docs-list',
@@ -16,12 +18,14 @@ export class DocsListComponent implements OnInit, AfterViewInit {
   pageEvent: PageEvent;
   displayedColumns: string[] = ['documentId', 'documentName', 'author', 'creationDate', 'readOnly'];
   documents = new MatTableDataSource<Document>();
+  authors: DocumentAuthor[] = [];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private docService: DocumentsService,
+    private authorService: AuthorService,
     private storageService: StorageService,
     private router: Router
   ) { }
@@ -38,8 +42,7 @@ export class DocsListComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     this.documents.filterPredicate = (data: Document, filter: string) => {
       return data.documentId.toString().indexOf(filter) !== -1
-        || data.documentName.toLowerCase().indexOf(filter) !== -1
-        || data.author.toLowerCase().indexOf(filter) !== -1;
+        || data.documentName.toLowerCase().indexOf(filter) !== -1;
     };
     this.documents.sort = this.sort;
     this.documents.sortingDataAccessor = (data: Document, header: string) => {
@@ -47,6 +50,7 @@ export class DocsListComponent implements OnInit, AfterViewInit {
         case 'creationDate': return new Date(data.creationDate);
         case 'documentId': return data[header];
         case 'readOnly': return data[header];
+        case 'author': return data.author.fullName.toLowerCase();
         default: return data[header].toLowerCase();
       }
     };
@@ -60,13 +64,22 @@ export class DocsListComponent implements OnInit, AfterViewInit {
     this.docService.getPage(pageIndex, pageSize, direction, props).subscribe(
       data => {
         this.docService.setAuthorized(true);
-        this.documents.data = data.content as Document[];
         this.paginator.length = data.totalElements;
+        this.getAuthors();
+        this.documents.data = data.content as Document[];
       },
       error => {
         if (error.status === 401) {
           this.router.navigate(['login']);
         }
+      }
+    );
+  }
+
+  getAuthors(): void {
+    this.authorService.getAuthors().subscribe(
+      data => {
+        this.authors = data as DocumentAuthor[];
       }
     );
   }
@@ -82,10 +95,6 @@ export class DocsListComponent implements OnInit, AfterViewInit {
         this.paginator.pageIndex = 0;
       }
     );
-  }
-
-  applyFilter(filterValue: string): void {
-    this.documents.filter = filterValue.trim().toLowerCase();
   }
 
   showDetails(id: number): void {

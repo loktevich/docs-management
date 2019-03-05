@@ -54,7 +54,7 @@ export class DocAddComponent implements OnInit {
       this.isEditing = true;
     }
     this.getAuthors();
-    const authorId = this.authors.find(a => a.authorId === document.authorId);
+    const authorId = this.authors.find(a => a.authorId === document.author.authorId);
     this.documentForm.controls['description'].setValue(document.description);
     this.documentForm.controls['authorId'].setValue(authorId);
     this.documentForm.controls['readonly'].setValue(document.readOnly);
@@ -70,8 +70,10 @@ export class DocAddComponent implements OnInit {
 
   saveDoc(description: string, readonly: boolean): void {
     const document = new Document();
+    const author = new DocumentAuthor();
+    author.authorId = this.documentForm.controls['authorId'].value;
     document.description = description;
-    document.authorId = this.documentForm.controls['authorId'].value;
+    document.author = author;
     document.readOnly = readonly;
     if (this.isEditing) {
       const docId = +this.route.snapshot.paramMap.get('id');

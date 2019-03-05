@@ -7,7 +7,8 @@
 
   <div class="row">
     <div class="col-12">
-      <mat-paginator #paginator [pageSizeOptions]="[2, 5, 10, 25]" [pageSize]="5" showFirstLastButtons (page)="getPage($event)"></mat-paginator>
+      <mat-paginator #paginator [pageSizeOptions]="[2, 5, 10, 25]" [pageSize]="5" showFirstLastButtons
+        (page)="getPage($event)"></mat-paginator>
     </div>
   </div>
 
@@ -15,7 +16,8 @@
     <div class="col-12">
       <div class="mat-elevation-z8 docs-table">
 
-        <mat-table [dataSource]="documents" matSort matSortActive="documentName" matSortDirection="asc" matSortDisableClear (matSortChange)=sortPage($event)>
+        <mat-table [dataSource]="documents" matSort matSortActive="documentName" matSortDirection="asc"
+          matSortDisableClear (matSortChange)=sortPage($event)>
 
           <!-- ID Column -->
           <ng-container matColumnDef="documentId">
@@ -32,7 +34,7 @@
           <!-- Author Column -->
           <ng-container matColumnDef="author">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Author </mat-header-cell>
-            <mat-cell *matCellDef="let doc"> {{ doc.author }} </mat-cell>
+            <mat-cell *matCellDef="let doc"> {{ doc.author.fullName }} </mat-cell>
           </ng-container>
 
           <!-- Date Column -->
@@ -63,8 +65,8 @@
           <mat-row *matRowDef="let doc; columns: displayedColumns;" (click)="showDetails(doc.documentId)">
           </mat-row>
           <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': isLoaded}"></mat-footer-row>
-          <mat-footer-row *matFooterRowDef="['noData']"
-            [ngClass]="{'hide': isLoaded && documents.data.length != 0}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': isLoaded && documents.data.length != 0}">
+          </mat-footer-row>
         </mat-table>
 
       </div>

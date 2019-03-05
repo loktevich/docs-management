@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Document } from '../model/document';
+import { DocumentAuthor } from '../model/author';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,9 @@ export class StorageService {
 
   emptyStorage(): void {
     this.docInStorage = new Document();
+    const author = new DocumentAuthor();
+    author.fullName = '';
     this.docInStorage.description = '';
-    this.docInStorage.author = '';
     this.docInStorage.readOnly = false;
   }
 }
