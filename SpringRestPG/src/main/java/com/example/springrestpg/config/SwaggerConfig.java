@@ -27,7 +27,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 	public Docket documentApi() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(RequestHandlerSelectors.basePackage("com.example.springrestpg.controller"))
-				.paths(PathSelectors.regex("/api/documents.*")).build().apiInfo(metaData());
+				.paths(PathSelectors.regex("/api/.*")).build().apiInfo(metaData());
 	}
 
 	private ApiInfo metaData() {
