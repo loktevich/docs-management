@@ -29,8 +29,6 @@ export class LoginComponent implements OnInit {
   login(): void {
     const username = this.loginForm.controls['username'].value;
     const password = this.loginForm.controls['password'].value;
-    console.log(username);
-    console.log(password);
     sessionStorage.setItem('token', `${username}:${password}`);
     this.router.navigate(['documents']);
   }

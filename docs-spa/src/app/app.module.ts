@@ -23,6 +23,7 @@ import {
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { LoginComponent } from './login/login.component';
+import { AuthorAddComponent } from './author-add/author-add.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { LoginComponent } from './login/login.component';
     DocsListComponent,
     DocDetailComponent,
     DocAddComponent,
-    LoginComponent
+    LoginComponent,
+    AuthorAddComponent
   ],
   imports: [
     BrowserModule,

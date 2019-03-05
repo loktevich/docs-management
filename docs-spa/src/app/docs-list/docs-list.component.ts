@@ -12,6 +12,7 @@ import { StorageService } from '../service/storage.service';
 })
 export class DocsListComponent implements OnInit, AfterViewInit {
 
+  isLoaded = false;
   pageEvent: PageEvent;
   displayedColumns: string[] = ['documentId', 'documentName', 'author', 'creationDate', 'readOnly'];
   documents = new MatTableDataSource<Document>();
@@ -29,11 +30,12 @@ export class DocsListComponent implements OnInit, AfterViewInit {
     this.pageEvent = new PageEvent();
     this.pageEvent.pageSize = 5;
     this.pageEvent.pageIndex = 0;
-    // this.getPage(this.pageEvent);
+    this.sort.active = 'documentName';
+    this.getPage(this.pageEvent);
+    this.isLoaded = true;
   }
 
   ngAfterViewInit() {
-    this.getPage(this.pageEvent);
     this.documents.filterPredicate = (data: Document, filter: string) => {
       return data.documentId.toString().indexOf(filter) !== -1
         || data.documentName.toLowerCase().indexOf(filter) !== -1

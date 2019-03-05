@@ -9,3 +9,25 @@ body {
 .app-container {
     min-width: 326px;
 }
+
+.input-form {
+    min-width: 296px;
+}
+
+.docs-table {
+    overflow-x: auto;
+}
+
+.mat-table {
+    width: 100%;
+    min-width: 532px;
+}
+
+.hide {
+    display: none;
+}
+
+mat-footer-row mat-footer-cell {
+    justify-content: center;
+    font: italic;
+}

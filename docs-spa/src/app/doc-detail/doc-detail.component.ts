@@ -62,7 +62,6 @@ export class DocDetailComponent implements OnInit {
     const docId = +this.route.snapshot.paramMap.get('id');
     this.docService.deleteDocument(docId).subscribe(
       data => {
-        console.log(data);
         this.router.navigateByUrl('/documents');
       },
       error => {

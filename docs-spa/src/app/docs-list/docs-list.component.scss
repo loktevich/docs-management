@@ -1,16 +1,3 @@
-.mat-form-field {
-    width: 100%;
-}
-
-.docs-table {
-    overflow-x: auto;
-}
-
-.mat-table {
-    width: 100%;
-    min-width: 532px;
-}
-
 .mat-row {
     cursor: pointer;
 }
@@ -38,13 +25,4 @@
 .mat-column-readOnly {
     flex: 0 1 17%;
     justify-content: flex-end;
-}
-
-.hide {
-    display: none;
-}
-
-mat-footer-row mat-footer-cell {
-    justify-content: center;
-    font: italic;
 }

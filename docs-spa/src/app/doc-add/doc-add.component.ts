@@ -39,7 +39,11 @@ export class DocAddComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.loadDocument();
+    if (this.docService.isAuthorized()) {
+      this.loadDocument();
+    } else {
+      this.router.navigate(['login']);
+    }
   }
 
   loadDocument(): void {
@@ -66,7 +70,6 @@ export class DocAddComponent implements OnInit {
       if (fileForm && fileForm.value) {
         this.docService.updateDocument(docId, document, fileForm.value.files[0]).subscribe(
           data => {
-            console.log(data);
             this.router.navigateByUrl('/documents');
           },
           error => {
@@ -78,7 +81,6 @@ export class DocAddComponent implements OnInit {
       } else {
         this.docService.updateDocument(docId, document).subscribe(
           data => {
-            console.log(data);
             this.router.navigateByUrl('/documents');
           },
           error => {
@@ -92,7 +94,6 @@ export class DocAddComponent implements OnInit {
       const fileForm = this.documentForm.controls['newFile'];
       this.docService.addDocument(fileForm.value.files[0], document).subscribe(
         data => {
-          console.log(data);
           this.router.navigateByUrl('/documents');
         },
         error => {
