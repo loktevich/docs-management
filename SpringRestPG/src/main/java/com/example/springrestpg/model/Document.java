@@ -10,7 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
@@ -43,9 +45,10 @@ public class Document {
 	@ApiModelProperty(value = "The date when document had been created/modified")
 	private Date creationDate;
 
-	@Column(name = "author")
+	@ManyToOne
+	@JoinColumn(name="author_id")
 	@ApiModelProperty(value = "The author of the document")
-	private String author;
+	private Author author;
 
 	@Column(name = "data")
 	@Lob
@@ -63,7 +66,7 @@ public class Document {
 	public Document() {
 	}
 
-	public Document(String documentName, String description, Date creationDate, String author, byte[] documentData,
+	public Document(String documentName, String description, Date creationDate, Author author, byte[] documentData,
 			String documentType, Boolean readOnly) {
 		this.documentName = documentName;
 		this.description = description;
@@ -102,11 +105,11 @@ public class Document {
 		this.creationDate = creationDate;
 	}
 
-	public String getAuthor() {
+	public Author getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(String author) {
+	public void setAuthor(Author author) {
 		this.author = author;
 	}
 
@@ -139,7 +142,7 @@ public class Document {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Document [documentId=").append(documentId).append(", name=").append(documentName)
 				.append(", type=").append(documentType).append(", description=").append(description)
-				.append(", creationDate=").append(creationDate).append(", author=").append(author).append(", readOnly=")
+				.append(", creationDate=").append(creationDate).append(", author=").append(author.getFullName()).append(", readOnly=")
 				.append(readOnly).append("]");
 		return builder.toString();
 	}

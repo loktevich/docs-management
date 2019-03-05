@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+import com.example.springrestpg.model.Author;
 import com.example.springrestpg.model.Document;
 import com.example.springrestpg.service.DocumentService;
 
@@ -135,7 +136,11 @@ public class DocumentController {
 	private Document getDocFromJson(String jsonStr) throws JSONException {
 		JSONObject jsonObj = new JSONObject(jsonStr);
 		String description = jsonObj.getString("description");
-		String author = jsonObj.getString("author");
+		long authorId = jsonObj.getLong("authorId");
+
+		// TODO: findAuthorById(long id) method
+		Author author = findAuthorById(authorId);
+
 		Boolean readOnly = jsonObj.getBoolean("readOnly");
 		Document doc = new Document();
 		doc.setDescription(description);
