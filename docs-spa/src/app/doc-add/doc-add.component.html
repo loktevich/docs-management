@@ -1,11 +1,11 @@
-<div class="container app-container">
+<div [hidden]="!docService.isAuthorized()" class="container app-container">
   <div class="row my-4">
     <div class="col-12 input-form">
       <h2>{{ pageTitle }}</h2>
       <hr>
 
-      <form [formGroup]="documentForm" enctype="multipart/form-data" (ngSubmit)="saveDoc(description.value, author.value, readonly.checked)"
-        class="d-flex flex-column">
+      <form [formGroup]="documentForm" enctype="multipart/form-data"
+        (ngSubmit)="saveDoc(description.value, readonly.checked)" class="d-flex flex-column">
         <h4>{{ fileTitle }}</h4>
 
         <div *ngIf='isEditing; else adding' class="d-flex flex-wrap">
@@ -19,7 +19,8 @@
           <div class="attached-change flex-fill pl-md-4">
             <mat-form-field class="w-100">
               <ngx-mat-file-input #file formControlName="editFile" placeholder="Change attachment"></ngx-mat-file-input>
-              <button mat-button mat-icon-button matSuffix *ngIf="!file.empty" (click)="file.clear($event)" aria-label="Clear" class="mr-2">
+              <button mat-button mat-icon-button matSuffix *ngIf="!file.empty" (click)="file.clear($event)"
+                aria-label="Clear" class="mr-2">
                 <mat-icon>clear</mat-icon>
               </button>
               <mat-icon matSuffix>folder_open</mat-icon>
@@ -31,8 +32,10 @@
 
         <ng-template #adding>
           <mat-form-field>
-            <ngx-mat-file-input #file formControlName="newFile" placeholder="Specify the document file" required></ngx-mat-file-input>
-            <button mat-button mat-icon-button matSuffix *ngIf="!file.empty" (click)="file.clear($event)" aria-label="Clear" class="mr-2">
+            <ngx-mat-file-input #file formControlName="newFile" placeholder="Specify the document file" required>
+            </ngx-mat-file-input>
+            <button mat-button mat-icon-button matSuffix *ngIf="!file.empty" (click)="file.clear($event)"
+              aria-label="Clear" class="mr-2">
               <mat-icon>clear</mat-icon>
             </button>
             <mat-icon matSuffix>folder_open</mat-icon>
@@ -49,18 +52,33 @@
 
         <h4>Description</h4>
         <mat-form-field>
-          <textarea #description rows="3" matInput formControlName="description" placeholder="Specify the document description"
-            required></textarea>
+          <textarea #description rows="3" matInput formControlName="description"
+            placeholder="Specify the document description" required></textarea>
         </mat-form-field>
+
         <h4>Author</h4>
-        <mat-form-field>
-          <input #author matInput formControlName="author" placeholder="Specify the document author" required>
-        </mat-form-field>
+        <div *ngIf="authors.length == 0; else select" class="d-flex justify-content-between">
+            <div>No authors. Please add</div>
+            <div>
+              <button mat-button mat-raised-button routerLink="/authors" color="primary">Add Author</button>
+            </div> 
+        </div>
+        <ng-template #select>
+          <mat-form-field>
+            <mat-select #author formControlName="authorId" placeholder="Select Author" required>
+              <mat-option *ngFor="let author of authors" [value]="author.authorId">
+                {{author.fullName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </ng-template>
+
         <mat-checkbox #readonly formControlName="readonly" color="primary">Read Only</mat-checkbox>
 
         <div class="d-flex mt-3">
-          <button *ngIf="isEditing; else saveBtn" type="submit" [disabled]="documentForm.pristine || !description.value || !author.value"
-            mat-raised-button color="primary" class="mr-3">Edit Document</button>
+          <button *ngIf="isEditing; else saveBtn" type="submit"
+            [disabled]="documentForm.pristine || !description.value || !author.value" mat-raised-button color="primary"
+            class="mr-3">Edit Document</button>
           <ng-template #saveBtn>
             <button type="submit" [disabled]="documentForm.invalid" mat-raised-button color="primary" class="mr-3">Save
               Document</button>

@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.docService.setAuthorized(false);
-    sessionStorage.removeItem('token');
   }
 
   login(): void {

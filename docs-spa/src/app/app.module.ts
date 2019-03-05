@@ -18,7 +18,8 @@ import {
   MatButtonModule,
   MatIconModule,
   MatCheckboxModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatSelectModule
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
@@ -45,6 +46,7 @@ import { AuthorAddComponent } from './author-add/author-add.component';
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatButtonModule,
     MatIconModule,
     MatCheckboxModule,

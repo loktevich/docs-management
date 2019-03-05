@@ -1,4 +1,4 @@
-<div class="container app-container">
+<div [hidden]="!docService.isAuthorized()" class="container app-container">
   <div class="row mt-4">
     <div class="col-12">
       <h2>Details for document #{{ document.documentId }}</h2>

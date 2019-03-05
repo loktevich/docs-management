@@ -3,7 +3,7 @@ export class Document {
     documentName: string;
     description: string;
     creationDate: Date;
-    author: string;
+    authorId: number;
     documentType: string;
     readOnly: boolean;
 }

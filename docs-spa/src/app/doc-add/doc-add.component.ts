@@ -5,7 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Document } from '../model/document';
 import { StorageService } from '../service/storage.service';
 import { FileValidator } from 'ngx-material-file-input';
-import { delay } from 'q';
+import { DocumentAuthor } from '../model/author';
+import { AuthorService } from '../service/author.service';
 
 // spring.servlet.multipart.max-file-size set to 20MB .In bytes
 const MAX_FILE_SIZE = 20971520;
@@ -21,9 +22,11 @@ export class DocAddComponent implements OnInit {
   fileTitle = 'File';
   fileName = '';
   isEditing = false;
+  authors: DocumentAuthor[] = [];
 
   constructor(
     private docService: DocumentsService,
+    private authorService: AuthorService,
     private storageService: StorageService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -34,16 +37,12 @@ export class DocAddComponent implements OnInit {
     newFile: [null, [Validators.required, FileValidator.maxContentSize(MAX_FILE_SIZE)]],
     editFile: [null],
     description: ['', Validators.required],
-    author: ['', Validators.required],
+    authorId: ['', Validators.required],
     readonly: false
   });
 
   ngOnInit() {
-    if (this.docService.isAuthorized()) {
-      this.loadDocument();
-    } else {
-      this.router.navigate(['login']);
-    }
+    this.loadDocument();
   }
 
   loadDocument(): void {
@@ -54,15 +53,25 @@ export class DocAddComponent implements OnInit {
       this.fileTitle = 'Attached File';
       this.isEditing = true;
     }
+    this.getAuthors();
+    const authorId = this.authors.find(a => a.authorId === document.authorId);
     this.documentForm.controls['description'].setValue(document.description);
-    this.documentForm.controls['author'].setValue(document.author);
+    this.documentForm.controls['authorId'].setValue(authorId);
     this.documentForm.controls['readonly'].setValue(document.readOnly);
   }
 
-  saveDoc(description: string, author: string, readonly: boolean): void {
+  getAuthors(): void {
+    this.authorService.getAuthors().subscribe(
+      data => {
+        this.authors = data as DocumentAuthor[];
+      }
+    );
+  }
+
+  saveDoc(description: string, readonly: boolean): void {
     const document = new Document();
     document.description = description;
-    document.author = author;
+    document.authorId = this.documentForm.controls['authorId'].value;
     document.readOnly = readonly;
     if (this.isEditing) {
       const docId = +this.route.snapshot.paramMap.get('id');

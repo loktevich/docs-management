@@ -21,11 +21,7 @@ export class DocDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.docService.isAuthorized()) {
-      this.getDocument();
-    } else {
-      this.router.navigate(['login']);
-    }
+    this.getDocument();
   }
 
   getDocument(): void {

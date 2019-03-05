@@ -14,30 +14,24 @@ import { AuthorService } from '../service/author.service';
 export class AuthorAddComponent implements OnInit {
 
   isLoaded = false;
-  displayedColumns: string[] = ['authorId', 'fullName'];
+  displayedColumns: string[] = ['authorId', 'fullName', 'delete'];
   authors = new MatTableDataSource<DocumentAuthor>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private docService: DocumentsService,
     private authorService: AuthorService,
     private fb: FormBuilder,
     private router: Router
   ) { }
 
   authorForm = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['']
+    fullName: [''],
   });
 
   ngOnInit() {
-    if (this.docService.isAuthorized()) {
-      this.getAuthors();
-    } else {
-      this.router.navigate(['login']);
-    }
+    this.getAuthors();
     this.authors.paginator = this.paginator;
     this.authors.sort = this.sort;
     this.authors.sortingDataAccessor = (data: DocumentAuthor, header: string) => {
@@ -50,13 +44,13 @@ export class AuthorAddComponent implements OnInit {
       return data.authorId.toString().indexOf(filter) !== -1
         || data.fullName.toLowerCase().indexOf(filter) !== -1;
     };
-    this.isLoaded = true;
   }
 
   getAuthors(): void {
     this.authorService.getAuthors().subscribe(
       data => {
         this.authors.data = data as DocumentAuthor[];
+        this.isLoaded = true;
         this.authors.paginator = this.paginator;
       },
       error => {
@@ -67,8 +61,20 @@ export class AuthorAddComponent implements OnInit {
     );
   }
 
-  saveAuthor(firstName: string, lastName: string): void {
-    console.log(`save author: ${firstName} ${lastName}`);
+  saveAuthor(fullName: string): void {
+    const author = new DocumentAuthor();
+    author.fullName = fullName;
+    this.authorService.addAuthor(author).subscribe(
+      response => {
+        this.authorForm.controls['fullName'].setValue('');
+        this.getAuthors();
+      },
+      error => {
+        if (error.status === 401) {
+          this.router.navigate(['login']);
+        }
+      }
+    );
   }
 
   deleteAuthor(authorId: number): void {

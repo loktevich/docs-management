@@ -1,20 +1,16 @@
-<div class="container app-container">
+<div [hidden]="!isLoaded" class="container app-container">
   <div class="row my-4">
     <div class="col-12 input-form">
       <h2>Add new author</h2>
       <hr>
 
-      <form [formGroup]="authorForm" (ngSubmit)="saveAuthor(firstName.value, lastName.value)"
+      <form [formGroup]="authorForm" (ngSubmit)="saveAuthor(fullName.value)"
         class="d-flex flex-column">
         <mat-form-field>
-          <input #firstName matInput formControlName="firstName" placeholder="Enter the First Name" required>
+          <input #fullName matInput formControlName="fullName" placeholder="Enter the Full Name">
         </mat-form-field>
-        <mat-form-field>
-          <input #lastName matInput formControlName="lastName" placeholder="Enter the Last Name">
-        </mat-form-field>
-
         <div class="d-flex my-2">
-          <button type="submit" [disabled]="authorForm.invalid" mat-raised-button color="primary" class="mr-3">Add
+          <button type="submit" [disabled]="!fullName.value" mat-raised-button color="primary" class="mr-3">Add
             Author</button>
           <button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
         </div>
@@ -29,7 +25,7 @@
         <input matInput #filter (keyup)="applyFilter($event.target.value)" placeholder="Filter" autocomplete="off">
         <button *ngIf="filter.value" mat-button matSuffix mat-icon-button aria-label="Clear"
           (click)="filter.value=''; applyFilter(filter.value)">
-          <mat-icon color="warn">clear</mat-icon>
+          <mat-icon>clear</mat-icon>
         </button>
       </mat-form-field>
       <mat-paginator #paginator [pageSize]="5" showFirstLastButtons (page)="getPage($event)"></mat-paginator>
@@ -57,10 +53,10 @@
 
           <!-- Delete Column -->
           <ng-container matColumnDef="delete">
-            <mat-header-cell *matHeaderCellDef="let author"></mat-header-cell>
-            <mat-cell>
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let author">
               <button mat-button mat-icon-button aria-label="Delete" (click)="deleteAuthor(author.authorId)">
-                <mat-icon color="warn">delete</mat-icon>
+                <mat-icon>delete</mat-icon>
               </button>
             </mat-cell>
           </ng-container>
