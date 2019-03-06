@@ -54,15 +54,15 @@ public class DocumentController {
 	@Autowired
 	AuthorService<Author> authorService;
 
-	@ApiOperation(value = "Get a page of documents", response = Page.class)
-	@GetMapping(value = "/documents", params = { "p", "s", "d", "pr" })
+	@ApiOperation(value = "Get a page of documents", notes = "p - page index, s - page size, d - direction of sorting, pr - sorted column, f - filter by", response = Page.class)
+	@GetMapping(value = "/documents", params = { "p", "s", "d", "pr", "f" })
 	public Page<Document> getPaginated(@RequestParam("p") int page, @RequestParam("s") int size,
-			@RequestParam("d") String direction, @RequestParam("pr") String properties) {
+			@RequestParam("d") String direction, @RequestParam("pr") String properties, @RequestParam("f") String filterBy) {
 		Sort.Direction sortDirection = Sort.Direction.ASC;
 		if (direction.equals("desc")) {
 			sortDirection = Sort.Direction.DESC;
 		}
-		Page<Document> resultPage = docService.findPaginated(page, size, sortDirection, properties);
+		Page<Document> resultPage = docService.findPaginated(page, size, sortDirection, properties, filterBy);
 		if (page > resultPage.getTotalPages()) {
 			throw new RuntimeException();
 		}

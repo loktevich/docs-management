@@ -18,7 +18,7 @@ public interface DocumentService<T> {
 
 	List<T> getAll();
 
-	Page<T> findPaginated(int page, int size, Sort.Direction direction, String properties);
+	Page<T> findPaginated(int page, int size, Sort.Direction direction, String properties, String filterBy);
 
 	T getById(long id);
 

@@ -53,8 +53,13 @@ public class DocumentServiceImpl implements DocumentService<Document> {
 	}
 
 	@Override
-	public Page<Document> findPaginated(int page, int size, Sort.Direction direction, String properties) {
-		return repository.findAll(PageRequest.of(page, size, direction, properties));
+	public Page<Document> findPaginated(int page, int size, Sort.Direction direction, String properties, String filterBy) {
+		if (filterBy.isEmpty()) {
+			return repository.findAll(PageRequest.of(page, size, direction, properties));
+		}
+		else {
+			return repository.findByAuthor_AuthorId(Long.parseLong(filterBy), PageRequest.of(page, size, direction, properties));
+		}
 	}
 
 	@Override
