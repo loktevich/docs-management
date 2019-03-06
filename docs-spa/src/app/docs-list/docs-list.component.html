@@ -6,18 +6,26 @@
   </div>
 
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-lg-4">
       <mat-form-field class="w-100">
         <mat-select #filter [formControl]="authorControl" placeholder="Filter by Author"
           (selectionChange)="filterByAuthor()" disableOptionCentering>
-          <mat-option>All</mat-option> 
+          <mat-option>All</mat-option>
           <mat-option *ngFor="let author of authors" [value]="author.authorId">
             {{author.fullName}}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="col-md-8">
+    <div class="col-lg-4">
+      <mat-form-field class="w-100">
+        <input matInput [max]="maxDate" placeholder="Filter by Date" [satDatepicker]="picker" [formControl]="dateRange" (dateChange)=filterByDate()>
+        <sat-datepicker #picker [rangeMode]="true" orderPeriodLabel="month" [closeAfterSelection]="false">
+        </sat-datepicker>
+        <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-4">
       <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="5" showFirstLastButtons
         (page)="getPage($event)"></mat-paginator>
     </div>

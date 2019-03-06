@@ -52,7 +52,7 @@
           <ng-container matColumnDef="delete">
             <mat-header-cell *matHeaderCellDef></mat-header-cell>
             <mat-cell *matCellDef="let author">
-              <button mat-button mat-icon-button aria-label="Delete" (click)="deleteAuthor(author.authorId)">
+              <button mat-button matTooltip="Delete Author (with documents)" mat-icon-button aria-label="Delete" (click)="deleteAuthor(author.authorId)">
                 <mat-icon>delete</mat-icon>
               </button>
             </mat-cell>

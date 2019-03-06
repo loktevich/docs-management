@@ -19,10 +19,12 @@ import {
   MatIconModule,
   MatCheckboxModule,
   MatTooltipModule,
-  MatSelectModule
+  MatSelectModule,
+  MatDatepickerModule
 } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
+import { SatDatepickerModule, SatNativeDateModule } from 'saturn-datepicker';
 import { LoginComponent } from './login/login.component';
 import { AuthorAddComponent } from './author-add/author-add.component';
 
@@ -52,7 +54,10 @@ import { AuthorAddComponent } from './author-add/author-add.component';
     MatCheckboxModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    MaterialFileInputModule
+    MaterialFileInputModule,
+    MatDatepickerModule,
+    SatDatepickerModule,
+    SatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

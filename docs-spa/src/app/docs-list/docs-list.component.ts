@@ -21,6 +21,8 @@ export class DocsListComponent implements OnInit {
   documents = new MatTableDataSource<Document>();
   authors: DocumentAuthor[] = [];
   authorControl = new FormControl('');
+  maxDate = new Date();
+  dateRange = new FormControl();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -40,6 +42,9 @@ export class DocsListComponent implements OnInit {
     this.getPage(this.pageEvent);
     this.isLoaded = true;
     this.getAuthors();
+    const previousDay = new Date();
+    previousDay.setDate(previousDay.getDate() - 2);
+    this.dateRange.setValue({begin: previousDay, end: this.maxDate});
   }
 
   getPage(event: PageEvent): void {
@@ -102,6 +107,10 @@ export class DocsListComponent implements OnInit {
     pageEvent.pageSize = pageSize;
     this.getPage(pageEvent);
     this.paginator.pageIndex = 0;
+  }
+
+  filterByDate(): void {
+    // TODO: filtering
   }
 
   showDetails(id: number): void {
