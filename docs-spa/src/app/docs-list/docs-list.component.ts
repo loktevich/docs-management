@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DocumentsService } from '../service/documents.service';
 import { Document } from '../model/document';
 import { MatTableDataSource, MatPaginator, MatSort, PageEvent, Sort } from '@angular/material';
@@ -6,19 +6,21 @@ import { Router } from '@angular/router';
 import { StorageService } from '../service/storage.service';
 import { DocumentAuthor } from '../model/author';
 import { AuthorService } from '../service/author.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-docs-list',
   templateUrl: './docs-list.component.html',
   styleUrls: ['./docs-list.component.scss']
 })
-export class DocsListComponent implements OnInit, AfterViewInit {
+export class DocsListComponent implements OnInit {
 
   isLoaded = false;
   pageEvent: PageEvent;
   displayedColumns: string[] = ['documentId', 'documentName', 'author', 'creationDate', 'readOnly'];
   documents = new MatTableDataSource<Document>();
   authors: DocumentAuthor[] = [];
+  authorControl = new FormControl('');
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -37,23 +39,7 @@ export class DocsListComponent implements OnInit, AfterViewInit {
     this.sort.active = 'documentName';
     this.getPage(this.pageEvent);
     this.isLoaded = true;
-  }
-
-  ngAfterViewInit() {
-    this.documents.filterPredicate = (data: Document, filter: string) => {
-      return data.documentId.toString().indexOf(filter) !== -1
-        || data.documentName.toLowerCase().indexOf(filter) !== -1;
-    };
-    this.documents.sort = this.sort;
-    this.documents.sortingDataAccessor = (data: Document, header: string) => {
-      switch (header) {
-        case 'creationDate': return new Date(data.creationDate);
-        case 'documentId': return data[header];
-        case 'readOnly': return data[header];
-        case 'author': return data.author.fullName.toLowerCase();
-        default: return data[header].toLowerCase();
-      }
-    };
+    this.getAuthors();
   }
 
   getPage(event: PageEvent): void {
@@ -61,12 +47,22 @@ export class DocsListComponent implements OnInit, AfterViewInit {
     const pageSize = event.pageSize;
     const direction = this.sort.direction.toString();
     const props = this.sort.active;
-    this.docService.getPage(pageIndex, pageSize, direction, props).subscribe(
+    const filterBy = this.authorControl.value || '';
+    this.docService.getPage(pageIndex, pageSize, direction, props, filterBy).subscribe(
       data => {
         this.docService.setAuthorized(true);
-        this.paginator.length = data.totalElements;
-        this.getAuthors();
         this.documents.data = data.content as Document[];
+        this.paginator.length = data.totalElements;
+        this.documents.sort = this.sort;
+        this.documents.sortingDataAccessor = (_data: Document, header: string) => {
+          switch (header) {
+            case 'creationDate': return new Date(_data.creationDate);
+            case 'documentId': return _data[header];
+            case 'readOnly': return _data[header];
+            case 'author': return _data.author.fullName.toLowerCase();
+            default: return _data[header].toLowerCase();
+          }
+        };
       },
       error => {
         if (error.status === 401) {
@@ -89,12 +85,23 @@ export class DocsListComponent implements OnInit, AfterViewInit {
     const pageSize = this.paginator.pageSize;
     const direction = event.direction.toString();
     const props = event.active;
-    this.docService.getPage(pageIndex, pageSize, direction, props).subscribe(
+    const filterBy = this.authorControl.value || '';
+    this.docService.getPage(pageIndex, pageSize, direction, props, filterBy).subscribe(
       data => {
         this.documents.data = data.content as Document[];
         this.paginator.pageIndex = 0;
       }
     );
+  }
+
+  filterByAuthor(): void {
+    const pageEvent = new PageEvent();
+    const pageIndex = 0;
+    const pageSize = this.paginator.pageSize;
+    pageEvent.pageIndex = pageIndex;
+    pageEvent.pageSize = pageSize;
+    this.getPage(pageEvent);
+    this.paginator.pageIndex = 0;
   }
 
   showDetails(id: number): void {

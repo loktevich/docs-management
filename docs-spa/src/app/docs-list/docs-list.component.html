@@ -1,4 +1,4 @@
-<div [hidden]="!docService.isAuthorized()" class="container-fluid app-container">
+<div [hidden]="!docService.isAuthorized()" class="container app-container">
   <div class="row mt-4">
     <div class="col-12">
       <h2>Documents</h2>
@@ -6,10 +6,22 @@
   </div>
 
   <div class="row">
-    <div class="col-12">
+    <div class="col-md-4">
+      <mat-form-field class="w-100">
+        <mat-select #filter [formControl]="authorControl" placeholder="Filter by Author"
+          (selectionChange)="filterByAuthor()" disableOptionCentering>
+          <mat-option>All</mat-option> 
+          <mat-option *ngFor="let author of authors" [value]="author.authorId">
+            {{author.fullName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-8">
       <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="5" showFirstLastButtons
         (page)="getPage($event)"></mat-paginator>
     </div>
+
   </div>
 
   <div class="row mb-4">
