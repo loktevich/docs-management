@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { DocumentAuthor } from '../model/author';
-import { DocumentsService } from '../service/documents.service';
 import { AuthorService } from '../service/author.service';
+import { DocumentsService } from '../service/documents.service';
 
 @Component({
   selector: 'app-author-add',
@@ -22,6 +22,7 @@ export class AuthorAddComponent implements OnInit {
 
   constructor(
     private authorService: AuthorService,
+    private docService: DocumentsService,
     private fb: FormBuilder,
     private router: Router
   ) { }
@@ -49,6 +50,7 @@ export class AuthorAddComponent implements OnInit {
   getAuthors(): void {
     this.authorService.getAuthors().subscribe(
       data => {
+        this.docService.setAuthorized(true);
         this.authors.data = data as DocumentAuthor[];
         this.isLoaded = true;
         this.authors.paginator = this.paginator;

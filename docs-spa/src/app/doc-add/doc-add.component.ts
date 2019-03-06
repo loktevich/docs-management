@@ -23,6 +23,7 @@ export class DocAddComponent implements OnInit {
   fileName = '';
   isEditing = false;
   authors: DocumentAuthor[] = [];
+  currentAuthor = new DocumentAuthor();
 
   constructor(
     private docService: DocumentsService,
@@ -52,18 +53,24 @@ export class DocAddComponent implements OnInit {
       this.pageTitle = 'Edit document #' + document.documentId;
       this.fileTitle = 'Attached File';
       this.isEditing = true;
+      this.currentAuthor = document.author;
     }
     this.getAuthors();
-    const authorId = this.authors.find(a => a.authorId === document.author.authorId);
     this.documentForm.controls['description'].setValue(document.description);
-    this.documentForm.controls['authorId'].setValue(authorId);
+    this.documentForm.controls['authorId'].setValue(document.author.authorId);
     this.documentForm.controls['readonly'].setValue(document.readOnly);
   }
 
   getAuthors(): void {
     this.authorService.getAuthors().subscribe(
       data => {
+        this.docService.setAuthorized(true);
         this.authors = data as DocumentAuthor[];
+      },
+      error => {
+        if (error.status === 401) {
+          this.router.navigate(['login']);
+        }
       }
     );
   }

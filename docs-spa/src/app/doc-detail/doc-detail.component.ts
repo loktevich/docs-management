@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentsService } from '../service/documents.service';
 import { Document } from '../model/document';
 import { StorageService } from '../service/storage.service';
+import { DocumentAuthor } from '../model/author';
 
 @Component({
   selector: 'app-doc-detail',
@@ -12,6 +13,7 @@ import { StorageService } from '../service/storage.service';
 export class DocDetailComponent implements OnInit {
 
   document = new Document();
+  author = new DocumentAuthor();
 
   constructor(
     private docService: DocumentsService,
@@ -28,7 +30,9 @@ export class DocDetailComponent implements OnInit {
     const docId = +this.route.snapshot.paramMap.get('id');
     this.docService.getDocument(docId).subscribe(
       data => {
+        this.docService.setAuthorized(true);
         this.document = data as Document;
+        this.author = this.document.author;
       },
       error => {
         if (error.status === 401) {

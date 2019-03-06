@@ -1,7 +1,19 @@
+.mat-table {
+    width: 100%;
+    min-width: 296px;
+    max-height: 302px;
+    overflow-y: auto;
+}
+
 .mat-column-documentId {
-    flex: 0 0 25%;
+    flex: 0 0 28%;
 }
 
 .mat-column-fullName {
-    flex: 1 1 75%;
+    flex: 1 1 52%;
+}
+
+.mat-column-delete {
+    flex: 0 1 20%;
+    justify-content: flex-end;
 }

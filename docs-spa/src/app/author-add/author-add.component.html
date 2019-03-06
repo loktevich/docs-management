@@ -1,11 +1,10 @@
-<div [hidden]="!isLoaded" class="container app-container">
+<div [hidden]="!docService.isAuthorized()" class="container app-container">
   <div class="row my-4">
     <div class="col-12 input-form">
       <h2>Add new author</h2>
       <hr>
 
-      <form [formGroup]="authorForm" (ngSubmit)="saveAuthor(fullName.value)"
-        class="d-flex flex-column">
+      <form [formGroup]="authorForm" (ngSubmit)="saveAuthor(fullName.value)" class="d-flex flex-column">
         <mat-form-field>
           <input #fullName matInput formControlName="fullName" placeholder="Enter the Full Name">
         </mat-form-field>
@@ -28,7 +27,6 @@
           <mat-icon>clear</mat-icon>
         </button>
       </mat-form-field>
-      <mat-paginator #paginator [pageSize]="5" showFirstLastButtons (page)="getPage($event)"></mat-paginator>
     </div>
   </div>
 
@@ -36,8 +34,7 @@
     <div class="col-12">
       <div class="mat-elevation-z8 docs-table">
 
-        <mat-table [dataSource]="authors" matSort matSortActive="fullName" matSortDirection="asc" matSortDisableClear
-          (matSortChange)=sortPage($event)>
+        <mat-table [dataSource]="authors" matSort matSortActive="fullName" matSortDirection="asc" matSortDisableClear>
 
           <!-- ID Column -->
           <ng-container matColumnDef="authorId">
@@ -73,13 +70,13 @@
             </mat-footer-cell>
           </ng-container>
 
-          <mat-header-row *matHeaderRowDef="displayedColumns">
+          <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true">
           </mat-header-row>
           <mat-row *matRowDef="let author; columns: displayedColumns;">
           </mat-row>
           <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': isLoaded}"></mat-footer-row>
-          <mat-footer-row *matFooterRowDef="['noData']"
-            [ngClass]="{'hide': isLoaded && authors.data.length != 0}"></mat-footer-row>
+          <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': isLoaded && authors.data.length != 0}">
+          </mat-footer-row>
         </mat-table>
 
       </div>

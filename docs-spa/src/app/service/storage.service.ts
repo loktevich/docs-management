@@ -16,13 +16,17 @@ export class StorageService {
   }
 
   loadFromStorage(): Document {
+    if (!this.docInStorage.author) {
+      const author = new DocumentAuthor();
+      this.docInStorage.author = author;
+    }
     return this.docInStorage;
   }
 
   emptyStorage(): void {
     this.docInStorage = new Document();
     const author = new DocumentAuthor();
-    author.fullName = '';
+    this.docInStorage.author = author;
     this.docInStorage.description = '';
     this.docInStorage.readOnly = false;
   }

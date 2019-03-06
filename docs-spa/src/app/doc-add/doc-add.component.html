@@ -65,7 +65,7 @@
         </div>
         <ng-template #select>
           <mat-form-field>
-            <mat-select #author formControlName="authorId" placeholder="Select Author" required>
+            <mat-select #author formControlName="authorId" placeholder="Select Author" [(value)]="currentAuthor.authorId" required>
               <mat-option *ngFor="let author of authors" [value]="author.authorId">
                 {{author.fullName}}
               </mat-option>
@@ -77,7 +77,7 @@
 
         <div class="d-flex mt-3">
           <button *ngIf="isEditing; else saveBtn" type="submit"
-            [disabled]="documentForm.pristine || !description.value || !author.value" mat-raised-button color="primary"
+            [disabled]="documentForm.pristine || !description.value" mat-raised-button color="primary"
             class="mr-3">Edit Document</button>
           <ng-template #saveBtn>
             <button type="submit" [disabled]="documentForm.invalid" mat-raised-button color="primary" class="mr-3">Save
