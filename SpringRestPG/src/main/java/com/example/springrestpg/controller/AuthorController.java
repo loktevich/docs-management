@@ -43,6 +43,11 @@ public class AuthorController {
         return service.getAll();
     }
     
+    @GetMapping("/authors/admin")
+    public Boolean isAdmin() {
+        return true;
+    }
+
     @ApiOperation(value = "Add the author")
     @PostMapping("/authors/add")
     public ResponseEntity<String> addAuthor(@RequestBody Author author) {

@@ -16,6 +16,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.hibernate.annotations.Proxy;
+
 import io.swagger.annotations.ApiModelProperty;
 
 /**
