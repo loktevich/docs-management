@@ -53,12 +53,29 @@ public class DocumentServiceImpl implements DocumentService<Document> {
 	}
 
 	@Override
-	public Page<Document> findPaginated(int page, int size, Sort.Direction direction, String properties, String filterBy) {
+	public Page<Document> findPaginated(int page, int size, Sort.Direction direction, String properties,
+			String filterBy, String dateRange) {
 		if (filterBy.isEmpty()) {
-			return repository.findAll(PageRequest.of(page, size, direction, properties));
-		}
-		else {
-			return repository.findByAuthor_AuthorId(Long.parseLong(filterBy), PageRequest.of(page, size, direction, properties));
+			if (dateRange.isEmpty()) {
+				return repository.findAll(PageRequest.of(page, size, direction, properties));
+			} else {
+				String[] dates = dateRange.split("_");
+				Date startDate = Date.valueOf(dates[0]);
+				Date endDate = Date.valueOf(dates[1]);
+				return repository.findByCreationDateBetween(startDate, endDate,
+						PageRequest.of(page, size, direction, properties));
+			}
+		} else {
+			if (dateRange.isEmpty()) {
+				return repository.findByAuthor_AuthorId(Long.parseLong(filterBy),
+						PageRequest.of(page, size, direction, properties));
+			} else {
+				String[] dates = dateRange.split("_");
+				Date startDate = Date.valueOf(dates[0]);
+				Date endDate = Date.valueOf(dates[1]);
+				return repository.findByAuthor_AuthorIdAndCreationDateBetween(Long.parseLong(filterBy), startDate,
+						endDate, PageRequest.of(page, size, direction, properties));
+			}
 		}
 	}
 
