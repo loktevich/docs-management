@@ -14,7 +14,8 @@ import { DocumentsService } from '../service/documents.service';
 export class AuthorAddComponent implements OnInit {
 
   isLoaded = false;
-  displayedColumns: string[] = ['authorId', 'fullName', 'delete'];
+  isAdmin: boolean;
+  displayedColumns: string[] = ['authorId', 'fullName'];
   authors = new MatTableDataSource<DocumentAuthor>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -32,6 +33,7 @@ export class AuthorAddComponent implements OnInit {
   });
 
   ngOnInit() {
+    this.isAdministrator();
     this.getAuthors();
     this.authors.paginator = this.paginator;
     this.authors.sort = this.sort;
@@ -45,6 +47,20 @@ export class AuthorAddComponent implements OnInit {
       return data.authorId.toString().indexOf(filter) !== -1
         || data.fullName.toLowerCase().indexOf(filter) !== -1;
     };
+  }
+
+  isAdministrator(): void {
+    this.authorService.adminCheck().subscribe(
+      data => {
+        this.isAdmin = true;
+        this.displayedColumns.push('delete');
+      },
+      error => {
+        if (error.status === 403) {
+          this.isAdmin = false;
+        }
+      }
+    );
   }
 
   getAuthors(): void {

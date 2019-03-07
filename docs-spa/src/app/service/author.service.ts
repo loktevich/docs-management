@@ -17,6 +17,10 @@ export class AuthorService {
     return headers;
   }
 
+  adminCheck(): Observable<any> {
+    return this.http.get(this.apiUrl + '/admin', { headers: this.headers() });
+  }
+
   getAuthors(): Observable<any> {
     return this.http.get(this.apiUrl, { headers: this.headers() });
   }

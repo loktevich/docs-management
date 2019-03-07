@@ -1,5 +1,5 @@
 <div [hidden]="!docService.isAuthorized()" class="container app-container">
-  <div class="row my-4">
+  <div *ngIf="isAdmin" class="row mt-4">
     <div class="col-12 input-form">
       <h2>Add new author</h2>
       <hr>
@@ -18,8 +18,9 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mt-4">
     <div class="col-12">
+      <h4>Authors</h4>
       <mat-form-field class="w-100">
         <input matInput #filter (keyup)="applyFilter($event.target.value)" placeholder="Filter" autocomplete="off">
         <button *ngIf="filter.value" matTooltip="Clear" mat-button matSuffix mat-icon-button aria-label="Clear"

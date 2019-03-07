@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { StorageService } from './service/storage.service';
 import { DocumentsService } from './service/documents.service';
 import { Router } from '@angular/router';
+import { AuthorService } from './service/author.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ export class AppComponent {
 
   constructor(
     private docService: DocumentsService,
+    private authorService: AuthorService,
     private storageService: StorageService,
     private router: Router
   ) { }

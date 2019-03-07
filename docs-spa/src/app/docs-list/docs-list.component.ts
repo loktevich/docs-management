@@ -87,6 +87,11 @@ export class DocsListComponent implements OnInit {
     this.authorService.getAuthors().subscribe(
       data => {
         this.authors = data as DocumentAuthor[];
+      },
+      error => {
+        if (error.status === 401) {
+          this.router.navigate(['login']);
+        }
       }
     );
   }
