@@ -19,15 +19,20 @@
     </div>
     <div class="col-lg-4">
       <mat-form-field class="w-100">
-        <input matInput [max]="maxDate" placeholder="Filter by Date" [satDatepicker]="picker" [formControl]="dateRange" (dateChange)=filterByDate()>
-        <sat-datepicker #picker [rangeMode]="true" orderPeriodLabel="month" [closeAfterSelection]="false">
+        <input #filter matInput [max]="maxDate" placeholder="Filter by Date Range" [satDatepicker]="picker"
+          [formControl]="dateRange" (dateChange)=filterByDate() class="date-input" readonly (click)="picker.open()">
+        <button *ngIf="dateRange.value" matTooltip="Clear" mat-button matSuffix mat-icon-button aria-label="Clear"
+          (click)="filterByDate(true)">
+          <mat-icon  >clear</mat-icon>
+        </button>
+        <sat-datepicker #picker [rangeMode]="true" orderPeriodLabel="month">
         </sat-datepicker>
         <sat-datepicker-toggle matSuffix [for]="picker"></sat-datepicker-toggle>
       </mat-form-field>
     </div>
     <div class="col-lg-4">
       <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25]" [pageSize]="5" showFirstLastButtons
-        (page)="getPage($event)"></mat-paginator>
+        (page)="getDocumentsPage($event)"></mat-paginator>
     </div>
 
   </div>
@@ -60,7 +65,7 @@
           <!-- Date Column -->
           <ng-container matColumnDef="creationDate">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Creation date </mat-header-cell>
-            <mat-cell *matCellDef="let doc"> {{ doc.creationDate | date }} </mat-cell>
+            <mat-cell *matCellDef="let doc"> {{ doc.creationDate | date: "yyyy-MM-dd HH:mm:ss" }} </mat-cell>
           </ng-container>
 
           <!-- Readonly Column -->

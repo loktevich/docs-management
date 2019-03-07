@@ -22,7 +22,7 @@ export class DocsListComponent implements OnInit {
   authors: DocumentAuthor[] = [];
   authorControl = new FormControl('');
   maxDate = new Date();
-  dateRange = new FormControl();
+  dateRange = new FormControl('');
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -39,21 +39,27 @@ export class DocsListComponent implements OnInit {
     this.pageEvent.pageSize = 5;
     this.pageEvent.pageIndex = 0;
     this.sort.active = 'documentName';
-    this.getPage(this.pageEvent);
+    this.dateRange.setValue('');
+    this.getDocumentsPage(this.pageEvent);
     this.isLoaded = true;
     this.getAuthors();
-    const previousDay = new Date();
-    previousDay.setDate(previousDay.getDate() - 2);
-    this.dateRange.setValue({begin: previousDay, end: this.maxDate});
   }
 
-  getPage(event: PageEvent): void {
+  getDocumentsPage(event: PageEvent, sort?: Sort): void {
     const pageIndex = event.pageIndex;
     const pageSize = event.pageSize;
-    const direction = this.sort.direction.toString();
-    const props = this.sort.active;
+    let direction;
+    let props;
+    if (sort) {
+      direction = sort.direction;
+      props = sort.active;
+    } else {
+      direction = this.sort.direction.toString();
+      props = this.sort.active;
+    }
     const filterBy = this.authorControl.value || '';
-    this.docService.getPage(pageIndex, pageSize, direction, props, filterBy).subscribe(
+    const dateRange = this.getDateRangeParameter();
+    this.docService.getPage(pageIndex, pageSize, direction, props, filterBy, dateRange).subscribe(
       data => {
         this.docService.setAuthorized(true);
         this.documents.data = data.content as Document[];
@@ -85,32 +91,34 @@ export class DocsListComponent implements OnInit {
     );
   }
 
-  sortPage(event: Sort): void {
-    const pageIndex = 0;
-    const pageSize = this.paginator.pageSize;
-    const direction = event.direction.toString();
-    const props = event.active;
-    const filterBy = this.authorControl.value || '';
-    this.docService.getPage(pageIndex, pageSize, direction, props, filterBy).subscribe(
-      data => {
-        this.documents.data = data.content as Document[];
-        this.paginator.pageIndex = 0;
-      }
-    );
+  sortPage(sort: Sort): void {
+    const pageEvent = this.cretePageEvent();
+    this.getDocumentsPage(pageEvent, sort);
+    this.paginator.pageIndex = 0;
   }
 
   filterByAuthor(): void {
+    const pageEvent = this.cretePageEvent();
+    this.getDocumentsPage(pageEvent);
+    this.paginator.pageIndex = 0;
+  }
+
+  filterByDate(allData: boolean): void {
+    const pageEvent = this.cretePageEvent();
+    if (allData) {
+      this.dateRange.setValue('');
+    }
+    this.getDocumentsPage(pageEvent);
+    this.paginator.pageIndex = 0;
+  }
+
+  cretePageEvent(): PageEvent {
     const pageEvent = new PageEvent();
     const pageIndex = 0;
     const pageSize = this.paginator.pageSize;
     pageEvent.pageIndex = pageIndex;
     pageEvent.pageSize = pageSize;
-    this.getPage(pageEvent);
-    this.paginator.pageIndex = 0;
-  }
-
-  filterByDate(): void {
-    // TODO: filtering
+    return pageEvent;
   }
 
   showDetails(id: number): void {
@@ -121,4 +129,26 @@ export class DocsListComponent implements OnInit {
     this.storageService.emptyStorage();
   }
 
+  getDateRangeParameter(): string {
+    if (this.dateRange.value === '') {
+      return '';
+    } else {
+      const startDate: Date = this.dateRange.value.begin;
+      const endDate: Date = this.dateRange.value.end;
+      const sd = this.localizeAndformatDate(startDate);
+      const ed = this.localizeAndformatDate(endDate);
+      return `${sd}_${ed}`;
+    }
+  }
+
+  localizeAndformatDate(date: Date): string {
+    const options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    };
+    const s = date.toLocaleDateString('ru-RU', options);
+    const dp = s.split('.');
+    return `${dp[2]}-${dp[1]}-${dp[0]}`;
+  }
 }

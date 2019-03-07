@@ -19,7 +19,7 @@
           <div class="attached-change flex-fill pl-md-4">
             <mat-form-field class="w-100">
               <ngx-mat-file-input #file formControlName="editFile" placeholder="Change attachment"></ngx-mat-file-input>
-              <button mat-button mat-icon-button matSuffix *ngIf="!file.empty" (click)="file.clear($event)"
+              <button mat-button matTooltip="Clear" mat-icon-button matSuffix *ngIf="!file.empty" (click)="file.clear($event)"
                 aria-label="Clear" class="mr-2">
                 <mat-icon>clear</mat-icon>
               </button>
@@ -34,7 +34,7 @@
           <mat-form-field>
             <ngx-mat-file-input #file formControlName="newFile" placeholder="Specify the document file" required>
             </ngx-mat-file-input>
-            <button mat-button mat-icon-button matSuffix *ngIf="!file.empty" (click)="file.clear($event)"
+            <button mat-button matTooltip="Clear" mat-icon-button matSuffix *ngIf="!file.empty" (click)="file.clear($event)"
               aria-label="Clear" class="mr-2">
               <mat-icon>clear</mat-icon>
             </button>

@@ -26,13 +26,14 @@ export class DocumentsService {
     return headers;
   }
 
-  getPage(pageIndex: number, pageSize: number, direction: string, props: string, filterBy: string): Observable<any> {
+  getPage(pageIndex: number, pageSize: number, direction: string, props: string, filterBy: string, dateRange: string): Observable<any> {
     const params = new HttpParams()
       .set('p', pageIndex.toString())
       .set('s', pageSize.toString())
       .set('d', direction)
       .set('pr', props)
-      .set('f', filterBy);
+      .set('f', filterBy)
+      .set('dr', dateRange);
     return this.http.get(this.apiUrl, { headers: this.headers(), params: params });
   }
 
