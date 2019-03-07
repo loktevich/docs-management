@@ -2,12 +2,7 @@
 
 ## Database confuguration
 
-Default settings:
- - url=jdbc:postgresql://localhost:5432/docbase
- - username=postgres
- - password=postgres
- 
-You can change this in`SpringRestPG/src/main/resources/application.properties`
+Used H2 in-memory database
 
 ## Starting the application
 
@@ -31,6 +26,18 @@ You can change this in`SpringRestPG/src/main/resources/application.properties`
        npm run start
 
     This will start client application locally at port 4200.
+
+4. Use credentials for different roles:
+   
+   Admin:
+   
+       user: neo
+       password: matrix
+   User:
+
+       user: agent
+       password: smith
+   
 
 ## API Documentation
 
